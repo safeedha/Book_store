@@ -1,0 +1,43 @@
+const Order=require('../Model/Order')
+
+const returnProduct=async(req,res,next)=>{
+  try{
+     const{orderid,productId}=req.params
+     const{returnreason}=req.body
+     console.log(returnreason)
+     const {id}=req.user
+     const order=await Order.findById(orderid)
+     orderItem=order.order_item
+
+      const single=orderItem.find((item,index)=>item.product_id.toString()===productId)
+      console.log(single)
+       single.return_request.is_requested=true
+       single.return_request.return_reason=returnreason
+       await order.save()
+
+        const orders = await Order.find({ user_id: id })
+         .populate({
+           path: 'order_item.product_id',
+           select: 'name images'
+         })
+         .populate('shipping_address').populate('coupen_id')
+         .sort({ createdAt: -1 }); 
+       res.status(200).json({message:"You requested for return",order:orders})
+  }
+  catch(error)
+  {
+   console.log(error)
+  }
+}
+
+
+
+
+
+
+
+
+
+module.exports={
+  returnProduct
+}
