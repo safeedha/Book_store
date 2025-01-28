@@ -30,7 +30,7 @@ const Sidebar = () => {
 
   return (
     <div className="fixed w-48 h-screen bg-gray-800 text-white flex flex-col justify-between">
-      {/* Menu Items */}
+  
       <ul className="mt-1">
         {menuItems.map((item, index) => (
           <li key={index} className="mb-1">

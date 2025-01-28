@@ -4,13 +4,11 @@ const returnProduct=async(req,res,next)=>{
   try{
      const{orderid,productId}=req.params
      const{returnreason}=req.body
-     console.log(returnreason)
      const {id}=req.user
      const order=await Order.findById(orderid)
      orderItem=order.order_item
 
       const single=orderItem.find((item,index)=>item.product_id.toString()===productId)
-      console.log(single)
        single.return_request.is_requested=true
        single.return_request.return_reason=returnreason
        await order.save()

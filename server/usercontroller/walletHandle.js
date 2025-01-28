@@ -37,7 +37,6 @@ const walletMoneyAdd=async(req,res,next)=>{
         amount:amount
       })
       await wallet.save()
-      console.log(wallet)
       return res.status(201).json({message:"amount added to wallet",wallet})
     }
   }

@@ -18,9 +18,6 @@ const CreateOrder = async (req, res,next) => {
     await wallet.save()
    }
 
-
-
-
     if (user.status==='block') {
         return res.status(403).json({ message: "User blocked" })
     }
@@ -33,10 +30,6 @@ const CreateOrder = async (req, res,next) => {
     })
     .populate('user_id');
     
-
-
-
-
     for (let item of cart) {
       const product = await Product.findById(item.product_id);
       if (product.stock === 0) {
@@ -602,7 +595,6 @@ const paymentStatus = async (req, res, next) => {
     order.order_item = updatedOrderItems;
 
     await order.save();
-    console.log(order);
 
     return res.status(200).json({ message: 'Payment status updated successfully' });
   } catch (error) {

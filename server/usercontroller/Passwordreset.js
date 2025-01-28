@@ -16,7 +16,7 @@ const forgetPassword = async (req, res,next) => {
     const exist = await User.findOne({ 
       email: email,
       googleId: null,
-    });
+    })
 
     if (!exist) {
       return res.status(404).json({ message: "This email is not registered" });

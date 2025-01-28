@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 
 
 
-const ACCESS_TOKEN_SECRET = 'your-access-token-secret';
-const REFRESH_TOKEN_SECRET = 'your-refresh-token-secret';
+// const ACCESS_TOKEN_SECRET = 'your-access-token-secret';
+// const REFRESH_TOKEN_SECRET = 'your-refresh-token-secret';
 
 const adminLogin = async (req, res) => {
   try {
@@ -24,13 +24,13 @@ const adminLogin = async (req, res) => {
 
       const accessToken = jwt.sign(
         { id: available._id, email: available.email ,role:available.role},
-        ACCESS_TOKEN_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" }
       );
 
       const refreshToken = jwt.sign(
         { id: available._id, email: available.email,role:available.role}, 
-        REFRESH_TOKEN_SECRET,
+        process.env.REFRESH_TOKEN_SECRET,
         { expiresIn: '7d' } 
       );
       

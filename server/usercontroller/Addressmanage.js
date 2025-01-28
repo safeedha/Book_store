@@ -21,7 +21,7 @@ try{
    res.status(200).json({message:"address fetched sucessfully",address})
 }
 catch(error){
-  console.log(error)
+  next(error)
 }
 }
 
@@ -86,7 +86,6 @@ const deleteAddress=async(req,res,next)=>{
     }
   )
   const remains = await Address.find({ user_id:id, status: 'unblock' });
-  console.log(remains)
   return res.status(200).json({ message: 'Address deleted successfully' ,remains});
   }
   catch(error){

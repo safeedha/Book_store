@@ -29,12 +29,11 @@ const applyCoupen = async (req, res, next) => {
   try {
     const { coupenCode } = req.body;
     const { id } = req.user;
-    console.log(coupenCode)
     const coupen = await Coupen.findOne({ coupenCode: coupenCode ,status:"active"});
     if (!coupen) {
       return res.status(404).json({ message: "Coupon not found" });
     }
-   console.log(coupen)
+
     const users = coupen.userId;
 
     const existingUser = users.find(item => item.user.toString() === id);
@@ -57,7 +56,6 @@ const applyCoupen = async (req, res, next) => {
   } 
   
   catch (error) {
-    console.log(error)
     next(error);
   }
 };

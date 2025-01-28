@@ -9,8 +9,8 @@ require('dotenv').config()
 
 const port=process.env.PORT||8000
 const razorpay = new Razorpay({
-  key_id: 'rzp_test_RmHsQLbeIzESnC',
-  key_secret: 'toMYZYyUM0mObogBqYDzRIcU',
+  key_id: process.env.KEYID,
+  key_secret:process.env.KEYSECRET
 })
 
 

@@ -2,7 +2,7 @@ const User=require('../Model/User')
 const OtpModel=require('../Model/Otp')
 const otpGenerator = require('otp-generator');
 const nodemailer = require('nodemailer');
-require('dotenv').config();
+// require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
@@ -13,8 +13,6 @@ const REFRESH_TOKEN_SECRET = 'your-refresh-token-secret';
 const otpGeneration = async (email) => {
   try {
     const otp = otpGenerator.generate(6, { digits: true, alphabets: false, upperCase: false, specialChars: false });
-    console.log(otp);
-
     const exist = await OtpModel.findOne({ email });
 
     if (exist) {
@@ -22,10 +20,10 @@ const otpGeneration = async (email) => {
         { email },
         { $set: { otp: otp, createdAt: Date.now() } }
       );
-      console.log("OTP updated successfully");
+     
     } else {
       const newOtp = await OtpModel.create({ email, otp });
-      console.log("New OTP created successfully");
+
     }
 
     const transporter = nodemailer.createTransport({
@@ -42,10 +40,10 @@ const otpGeneration = async (email) => {
       text: `Your OTP for verification is: ${otp}`,
     });
 
-    console.log("OTP sent successfully");
+ 
 
   } catch (error) {
-    console.error("Error during OTP generation or email sending:", error);
+   
 
     if (error instanceof Error) {
       throw new Error('OTP generation or email sending failed: ' + error.message);
@@ -90,7 +88,7 @@ const userSignup=async(req,res,next)=>{
 const otpVerification = async (req, res,next) => {
   try {
     const { email, otp } = req.body;
-    console.log(req.body);
+
     
     const exist = await OtpModel.findOne({ email });
 
@@ -119,7 +117,6 @@ const otpVerification = async (req, res,next) => {
 const otpResend = async (req, res,next) => {
   try {
     const { email } = req.body;
-    console.log(email)
     await otpGeneration(email);
     return res.status(200).json({ message: 'OTP has been resent successfully' });
   } catch (error) {

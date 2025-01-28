@@ -89,7 +89,6 @@ const getCartProduct=async(req,res,next)=>{
 const deleteCarttItem=async(req,res,next)=>{
   try{
    const {id}=req.params
-   console.log(id)
    const del=await Cart.deleteOne({_id:id})
    if (del.deletedCount === 0) 
     {
@@ -121,9 +120,9 @@ const getQuantitCart=async(req,res,next)=>{
 
 const addQuantityCart = async (req, res, next) => {
   try {
-    const { cartId } = req.params; // Get the cart ID from request parameters
-    const { id } = req.user; // Get the user ID from authenticated user
-    const { productid } = req.body; // Get the product ID from request body
+    const { cartId } = req.params; 
+    const { id } = req.user; 
+    const { productid } = req.body; 
 
     const user = await User.findById({ _id: id });
     if (user.status === 'block') {

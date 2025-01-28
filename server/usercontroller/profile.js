@@ -3,11 +3,7 @@ const bcrypt = require('bcrypt');
 
 const updateProfile=async(req,res,next)=>{
   try{
-    console.log(req.body)
-    const {id}=req.body
-    console.log(id)
-  
-   
+    const {id}=req.body 
     if(req.body?.editednumber)
       {
         const phoneexist=await User.findOne({
@@ -52,7 +48,6 @@ const chanePassword=async(req,res,next)=>{
        password:passwordHash
       }
     })
-    console.log(user)
     res.status(200).json({message:"password updated sucessefully"})
 
   }

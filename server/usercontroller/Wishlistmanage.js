@@ -6,7 +6,6 @@ const addToWishlist=async(req,res,next)=>{
   try{
     const {id}=req.user
     const {productId}=req.body
-   console.log(productId)
     const user = await User.findById({ _id: id })
     if (user.status==='block') {
         return res.status(403).json({ message: "User blocked" })
