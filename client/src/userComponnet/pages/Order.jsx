@@ -343,9 +343,11 @@ const orderDetail = currentOrders.map((item, index) => (
           <p className="text-green-600 font-bold">
             Total amount to pay: &#8377;{item.total_amount > 0 ? item.total_amount + 50 : item.total_amount}
           </p>
+          {item.total_amount > 0&&
           <p className="text-gray-600">
             Discounted amount: &#8377;{item.actual_amount - item.total_amount}
           </p>
+          }
         </div>
         <div>
           <p className="font-semibold text-gray-700">{item.shipping_address.name}</p>

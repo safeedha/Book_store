@@ -70,7 +70,7 @@ function AdminOrder() {
           onDoubleClick={() => singleOrderdetails(item._id, prod.product_id._id)}
         >
           <td className="px-4 py-2 text-center text-gray-700 border">
-            {prod._id}
+            {item._id}
           </td>
           <td className="px-4 py-2 text-center text-gray-700 border">
             {item.shipping_address.name} {item.shipping_address.phone}{' '}
@@ -90,9 +90,14 @@ function AdminOrder() {
             ({paymentstatus})
           </td>
           
-          <td className="px-4 py-2 text-center text-gray-700 border">
-            {currentStatus}
-          </td>
+          <td
+      className={`px-4 py-2 text-center text-gray-700 border ${
+        currentStatus === "Delivered" ? " text-green-700" : "text-red-600"
+      }`}
+    >
+      {currentStatus}
+    </td>
+
           <td>
             <select
               value={currentStatus}
@@ -101,22 +106,22 @@ function AdminOrder() {
               }
               className="px-3 py-2 border rounded"
             >
-              <option value="Pending" >
+              <option value="Pending" disabled={currentStatus==="Processing"||currentStatus==="Shipped"||currentStatus === "Delivered" || currentStatus === "Cancelled"||currentStatus==="Processing"||currentStatus==="Returned"}>
                 Pending
               </option>
-              <option value="Processing" >
+              <option value="Processing" disabled={currentStatus==="Shipped"||currentStatus === "Delivered" || currentStatus === "Cancelled"||currentStatus==="Processing"||currentStatus==="Returned"} >
                 Processing
               </option>
-              <option value="Shipped" >
+              <option value="Shipped" disabled={currentStatus === "Delivered" || currentStatus === "Cancelled"||currentStatus==="Returned"}>
                 Shipping
               </option>
-              <option value="Delivered" >
+              <option value="Delivered"disabled={currentStatus === "Cancelled"||currentStatus==="Returned"} >
                 Delivered
               </option>
-              <option value="Cancelled" >
+              <option value="Cancelled" disabled={currentStatus === "Delivered"}>
                 Cancelled
               </option>
-              <option value="Returned" >
+              <option value="Returned" disabled>
                 Returned
               </option>
             </select>
