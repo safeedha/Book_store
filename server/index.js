@@ -5,8 +5,9 @@ const admin_routes = require('./Router/adminRouter.js');
 const cookieParser = require('cookie-parser');
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
+require('dotenv').config()
 
-
+const port=process.env.PORT||8000
 const razorpay = new Razorpay({
   key_id: 'rzp_test_RmHsQLbeIzESnC',
   key_secret: 'toMYZYyUM0mObogBqYDzRIcU',
@@ -72,6 +73,6 @@ app.use('/user', user_routes);
 app.use('/admin', admin_routes); 
 
 
-app.listen(8000, () => {
+app.listen(port, () => {
   console.log(`Server is running on port 8000.`);
 });
