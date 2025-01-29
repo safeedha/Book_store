@@ -209,7 +209,7 @@ const cancelOrder = async (req, res,next) => {
           }
         }
       
-        if(order.payment_methods==="online payment" && !order.coupen_id)
+        if(order.payment_methods==="online payment" && order.coupen_id)
           {
             const hasPendingOrFailed = order.order_item.some(
               (item) => item.payment_status === "pending" || item.payment_status === "failed"
@@ -304,11 +304,6 @@ const cancelOrder = async (req, res,next) => {
                   await order.save();
                 }
                }
-
-
-
-
-
   
               const Allorder = await Order.find({ user_id: id })
               .populate({
