@@ -1,28 +1,34 @@
 import adminInstance from "./AdminInstance";
 
-export const getAllproduct=async(setProduct)=>{
+export const getAllproduct=async(setProduct,dispatch,logoutAdmin)=>{
    try{
     const response = await adminInstance.get('/product');
     setProduct(response.data.product);
    }
    catch(error){
-      console.log(error)
+      if(error.response.data.message==="Refresh token not found. Please log in again.")
+         {
+              dispatch(logoutAdmin())
+         }
    }
 }
 
-export const changeStatus=async(status)=>{
+export const changeStatus=async(status,dispatch,logoutAdmin)=>{
    try{
       const response = await adminInstance.patch(`/product/${id}`, { status });
       return response
    }
    catch(error)
    {
-    console.log(error)
+      if(error.response.data.message==="Refresh token not found. Please log in again.")
+         {
+              dispatch(logoutAdmin())
+         }
    }
 }
 
 
-export const addofferProduct=async(productId,name,expiryDate,discount,setIsOpen,toast)=>{
+export const addofferProduct=async(productId,name,expiryDate,discount,setIsOpen,toast,dispatch,logoutAdmin)=>{
    try{
       
       const response=await adminInstance.post("/offer/product",{productId,name,expiryDate,discount})
@@ -44,6 +50,11 @@ export const addofferProduct=async(productId,name,expiryDate,discount,setIsOpen,
       {
          toast.error("offer already exist for this product")
          setIsOpen(false) 
+         return
       }
+      if(error.response.data.message==="Refresh token not found. Please log in again.")
+         {
+              dispatch(logoutAdmin())
+         }
    }
 }

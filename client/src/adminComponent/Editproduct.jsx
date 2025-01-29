@@ -1,14 +1,17 @@
 import React, { useState,useEffect } from 'react';
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import adminInstance from '@/Api/adminInstance';
+import adminInstance from './AdminApi/AdminInstance';
 import { useParams,useNavigate } from 'react-router-dom';
 import Crop from '@/Reusable/Crop';
 import { useSelector } from 'react-redux';
 import axios from 'axios'
 import Sidebar from './Sidebar';
+import { useDispatch } from "react-redux";
+import { logoutAdmin } from "../feature/adminSlice";
 
 function Editproduct() {
+  const dispatch=useDispatch()
  const {id}=useParams()
 const navigate=useNavigate()
  const [productName, setProductName] = useState("");
@@ -82,8 +85,7 @@ useEffect(()=>{
        setSku(response.data.product.sku);
        setImage(response.data.product.images); 
      } catch (error) {
-
-       console.error( error);
+       dispatch(logoutAdmin())
      }
    };
    if (id) {

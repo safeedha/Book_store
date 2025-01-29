@@ -3,7 +3,8 @@ import { useLocation,useParams, useNavigate} from 'react-router-dom'
 import { motion } from 'framer-motion';
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import adminInstance from '@/Api/adminInstance';
+
+
 
 function Editcustomer() {
   const location = useLocation(); 

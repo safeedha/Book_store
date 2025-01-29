@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import instance from "../Api/adminInstance";
 import { useNavigate } from "react-router-dom";
 import {setAdmindetails ,logoutAdmin} from '../feature/adminSlice'
 import { useDispatch } from "react-redux";

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from 'axios'
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import adminInstance from "@/Api/adminInstance";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 

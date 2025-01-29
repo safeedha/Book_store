@@ -1,4 +1,4 @@
-import adminInstance from "@/Api/adminInstance";
+import adminInstance from "./AdminInstance";
 
 export const getOrder=async ()=>{
   try{

@@ -9,6 +9,7 @@ import Modal from 'react-modal';
 import Swal from "sweetalert2";
 
 
+
 const customStyles = {
   content: {
     top: '50%',
@@ -57,7 +58,7 @@ function GetCategory() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-         await getAllCategory(setCategory )
+         await getAllCategory(setCategory)
       } catch (error) {
         toast.error("Error fetching category data");
       }

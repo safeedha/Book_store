@@ -41,7 +41,7 @@ function GetCoupe() {
     setIsOpen(true);
   }
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 1;
+  const itemsPerPage = 4;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = coupen.slice(indexOfFirstItem, indexOfLastItem);

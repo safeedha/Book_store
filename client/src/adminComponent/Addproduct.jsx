@@ -4,12 +4,16 @@ import Crop from "@/Reusable/Crop";
 import { useSelector } from "react-redux";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
-import adminInstance from "@/Api/adminInstance";
+import adminInstance from "./AdminApi/AdminInstance";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import { useDispatch } from "react-redux";
+import { logoutAdmin } from "@/feature/adminSlice";
+
 
 
 const AddProduct = () => {
+  const dispatch=useDispatch()
   const navigate=useNavigate()
   const [productName, setProductName] = useState("");
   const [description, setDescription] = useState("");
@@ -29,11 +33,14 @@ const AddProduct = () => {
     const fetchCategory = async () => {
       try {
         const response = await adminInstance.get('/category');
-        console.log(response.data.category); 
         setCateList(response.data.category)
       } catch (error) {
         toast.error("Error fetching category data:")
-        console.error("Error fetching category data:", error); 
+        if(error.response.data.message==="Refresh token not found. Please log in again.")
+          {
+               dispatch(logoutAdmin())
+          }
+       
       }
     };
     
@@ -55,7 +62,6 @@ useEffect(()=>{
   let item = [...crop]; 
   item.push(croped);   
   setCrop([...item]);
-  console.log("that was smooth")
 },[croped])
  
   const handleFileChange = (e) => {
@@ -124,7 +130,7 @@ useEffect(()=>{
     }
     catch(error)
     {
-      console.log(error)
+  
       if(error.response.status===409)
       {
         toast.error("This product already exist")

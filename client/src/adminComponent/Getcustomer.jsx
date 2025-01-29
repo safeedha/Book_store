@@ -4,9 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { getUser, userStatusUpdate } from './AdminApi/User';
 import Swal from 'sweetalert2';
-import Pagination from '../Reusable/Pagination'; 
+import Pagination from '../Reusable/Pagination';
+import { useDispatch } from "react-redux";
+import { logoutAdmin } from "../feature/adminSlice"; 
 
 function Getcustomer() {
+  const dispatch=useDispatch()
   const Navigate = useNavigate();
   const [user, setUser] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); 
@@ -15,7 +18,7 @@ function Getcustomer() {
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        await getUser(setUser);
+        await getUser(setUser,dispatch,logoutAdmin);
       } catch (error) {
         console.log(error);
       }
@@ -43,7 +46,7 @@ function Getcustomer() {
       let status = current.status;
       status = status === 'unblock' ? 'block' : 'unblock';
       try {
-        await userStatusUpdate(id, setUser, status, user);
+        await userStatusUpdate(id, setUser, status, user,dispatch,logoutAdmin);
       } catch (error) {
         toast.error('Some error occurred. Try again later.');
       }

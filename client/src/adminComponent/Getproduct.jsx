@@ -3,11 +3,12 @@ import Sidebar from './Sidebar'
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { useNavigate } from 'react-router-dom';
-import adminInstance from '@/Api/adminInstance';
 import Pagination from '@/Reusable/Pagination';
 import { getAllproduct,changeStatus,addofferProduct } from './AdminApi/Product';
 import Swal from 'sweetalert2';
 import Modal from 'react-modal';
+import { useDispatch } from "react-redux";
+import { logoutAdmin } from "../feature/adminSlice";
 
 const customStyles = {
   content: {
@@ -22,6 +23,7 @@ const customStyles = {
 
 
 function GetProduct() {
+  const dispatch=useDispatch()
   let subtitle;
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
@@ -48,7 +50,8 @@ function GetProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        await getAllproduct(setProduct)
+        await getAllproduct(setProduct,dispatch,logoutAdmin)
+
       } catch (error) {
         toast.error("There is an error in fetching products.");
       }
@@ -83,7 +86,7 @@ function GetProduct() {
       });
   
       if (result.isConfirmed) {
-        const response = changeStatus(status)
+        const response = changeStatus(status,dispatch,logoutAdmin)
         if (response) {
           const updatedProduct = product.map((doc) =>
             doc._id === id ? { ...doc, status } : doc
@@ -111,7 +114,7 @@ function GetProduct() {
         toast.error("Dtae should be upcoming days")
         return
       }
-       await addofferProduct(productId,name,expiryDate,discount,setIsOpen,toast)
+       await addofferProduct(productId,name,expiryDate,discount,setIsOpen,toast,dispatch,logoutAdmin)
     }
     catch(error)
     {

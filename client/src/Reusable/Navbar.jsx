@@ -29,7 +29,11 @@ const Navbar = ({ user }) => {
       try {
         const response = await instance.get('/user/status');
       } catch (error) {
-
+         if(error.response.data.message==="Invalid refresh token. Please log in again.")
+         {
+          dispatch(logoutUser())
+          return
+         }
         if(error.response.data.message==="User blocked")
         {
           dispatch(logoutUser())

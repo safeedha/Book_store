@@ -2,7 +2,7 @@ import { set } from "lodash";
 import adminInstance from "./AdminInstance";
 
 
-export const todayreport=async(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader)=>{
+export const todayreport=async(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin)=>{
   try{
   
     const response =await adminInstance.get("/sales/today")
@@ -43,14 +43,17 @@ export const todayreport=async(setDeliverd,setChartData,setHeading,setCsvData,se
   }
   catch(error)
   {
-    console.log(error)
+    if(error.response.data.message==="Refresh token not found. Please log in again.")
+    {
+         dispatch(logoutAdmin())
+    }
   }
 }
 
 
 
 
-export const weekReport=async(setDeliverd,setChartData,setHeading,setCsvData,setHeader,setXasis)=>{
+export const weekReport=async(setDeliverd,setChartData,setHeading,setCsvData,setHeader,setXasis,dispatch,logoutAdmin)=>{
   try{
     const response =await adminInstance.get("/sales/week")
     console.log(response.data.orders)
@@ -62,7 +65,7 @@ export const weekReport=async(setDeliverd,setChartData,setHeading,setCsvData,set
       });
     });
     
-    console.log("week")
+
     const labelspreprocess=orderItem_time.flat()
     console.log(labelspreprocess)
     
@@ -79,7 +82,7 @@ export const weekReport=async(setDeliverd,setChartData,setHeading,setCsvData,set
     const quantity = response.data.orders
     .map((item) => item.order_item.map((single) => single.quantity))
     .flat(); 
-  console.log(quantity);
+  
 
   const count = labelspreprocess.reduce((acc, label, index) => {   
     if (acc[label]) {
@@ -137,11 +140,14 @@ export const weekReport=async(setDeliverd,setChartData,setHeading,setCsvData,set
 
   }
   catch(error){
-    console.log(error)
+    if(error.response.data.message==="Refresh token not found. Please log in again.")
+      {
+           dispatch(logoutAdmin())
+      }
   }
 }
 
-export const monthReport=async(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader)=>{
+export const monthReport=async(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin)=>{
   try{
     const response =await adminInstance.get("/sales/month")
     setDeliverd(response.data.orders)
@@ -223,11 +229,14 @@ export const monthReport=async(setDeliverd,setChartData,setHeading,setCsvData,se
     
   }
   catch(error){
-    console.log(error)
+    if(error.response.data.message==="Refresh token not found. Please log in again.")
+      {
+           dispatch(logoutAdmin())
+      }
   }
 }
 
-export const customReport = async (setDelivered, startDate, endDate,setChartData,setHeading,setCsvData,setXasis,setHeader) => {
+export const customReport = async (setDelivered, startDate, endDate,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin) => {
   try {
     console.log(startDate, endDate)
     const response = await adminInstance.get("/sales/custom", {
@@ -331,7 +340,10 @@ export const customReport = async (setDelivered, startDate, endDate,setChartData
     setDelivered(response.data.orders);
     setHeading("Custom Report")
   } catch (error) {
-    console.error("Error fetching custom report:", error);
+    if(error.response.data.message==="Refresh token not found. Please log in again.")
+      {
+           dispatch(logoutAdmin())
+      }
   }
 }
 

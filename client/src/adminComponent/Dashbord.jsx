@@ -8,9 +8,12 @@ import * as XLSX from "xlsx";
 import { CSVDownload,CSVLink } from 'react-csv';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+import { useDispatch } from "react-redux";
+import { logoutAdmin } from "../feature/adminSlice";
 
 
 export default function Dashbord() {
+  const dispatch=useDispatch()
   const [chartData, setChartData] = useState({
     labels: ["Jan 1", "Jan 2", "Jan 3", "Jan 4", "Jan 5", "Jan 6"],
     datasets: [
@@ -33,14 +36,11 @@ export default function Dashbord() {
   const [netamount, setNetamount] = useState(0)
   const [xaxis,setXasis]=useState("")
 
-  useEffect(()=>{
-    console.log("hey")
-  console.log(csvData)
-  },[csvData])
+ 
 
   useEffect(()=>{
       const getDefaultreprt=async()=>{
-        await todayreport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader);
+        await todayreport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin);
       }
       getDefaultreprt()
   },[])
@@ -72,8 +72,8 @@ export default function Dashbord() {
     doc.text(heading, 14, 15);
   
     doc.autoTable({
-      head: header, // Use the dynamic header
-      body: transformedData, // Use transformed vertical data
+      head: header, 
+      body: transformedData, 
       startY: 20,
       theme: 'striped',
     });
@@ -130,7 +130,7 @@ export default function Dashbord() {
 
   const todayHandle = async () => {
     try {
-      await todayreport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader);
+      await todayreport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin);
     } catch (error) {
       console.log(error);
     }
@@ -138,7 +138,7 @@ export default function Dashbord() {
 
   const weekHandle=async()=>{
     try{
-     await weekReport(setDeliverd,setChartData,setHeading,setCsvData,setHeader,setXasis)
+     await weekReport(setDeliverd,setChartData,setHeading,setCsvData,setHeader,setXasis,dispatch,logoutAdmin)
     }
     catch(error)
     {
@@ -150,7 +150,7 @@ export default function Dashbord() {
 
   const monthHandle=async()=>{
     try{
-     await monthReport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader)
+     await monthReport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin)
     }
     catch(error)
     {
@@ -177,7 +177,7 @@ export default function Dashbord() {
       toast.error("End date should be greater than start date.");
       return;
     }
-    await customReport(setDeliverd, startDate, endDate,setChartData,setHeading,setCsvData,setXasis,setHeader);
+    await customReport(setDeliverd, startDate, endDate,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin);
   };
   
 
@@ -189,7 +189,7 @@ export default function Dashbord() {
     <div className="flex">
       <Sidebar />
       <Toaster position="top-center" richColors />
-      <div className="ml-48 p-2 flex-1 bg-gray-300 min-h-screen">
+      <div className="ml-48 p-2 flex-1 bg-gray-300 min-h-screen w-full">
         <h2 className="text-xl font-bold mb-4">Sales Report</h2>
         
        
@@ -209,7 +209,7 @@ export default function Dashbord() {
           </div>
         </div>
 
-        {/* Date Range Filter */}
+     
         <div className="mb-4">
   <button onClick={() => todayHandle()} className="mr-2 px-4 py-2 bg-blue-500 text-white rounded">Today</button>
   <button onClick={() => weekHandle()} className="mr-2 px-4 py-2 bg-green-500 text-white rounded">Week</button>

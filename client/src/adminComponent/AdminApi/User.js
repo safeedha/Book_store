@@ -1,12 +1,15 @@
 import adminInstance from "./AdminInstance"
 
-export const getUser=async(setUser)=>{
+export const getUser=async(setUser,dispatch,Navigate)=>{
   try{
     const response=await adminInstance.get('/customer')
     setUser(response.data.customer)
   }
   catch(error){
-    console.log(error)
+    if(error.response.data.message==="Refresh token not found. Please log in again.")
+      {
+           dispatch(logoutAdmin())
+      }
   }
 }
 
@@ -26,6 +29,9 @@ export const userStatusUpdate=async(id,setUser,status,user)=>{
  }
  catch(error)
  {
-  console.log(error)
+  if(error.response.data.message==="Refresh token not found. Please log in again.")
+    {
+         dispatch(logoutAdmin())
+    }
  }
 }
