@@ -301,28 +301,131 @@ const OrderStatus = async (req, res, next) => {
         
 
          if(newStatus==="Cancelled"){
-          if(order.payment_methods==="online payment")
+          if(order.payment_methods==="online payment"&& order.coupen_id)
             {
-              amount=Math.ceil(orderItem.original_price-(orderItem.original_price*orderItem.discount/100))*orderItem.quantity
-              let newprice=order.total_amount-amount
               const hasPendingOrFailed = order.order_item.some(
                 (item) => item.payment_status === "pending" || item.payment_status === "failed"
               )         
               if (hasPendingOrFailed) {
-                const result = await Order.updateOne(
-                  { _id:orderId , "order_item.product_id": prodId },
-                  {
-                    $set: {
-                      "order_item.$.payment_status": "unpaid",
-                      total_amount: newprice,
-                      actual_amount:newprice
-                    },
-                  }
-                );
+                let updatedOrderItems = order.order_item.filter(
+                               item =>
+                                 item.product_id.toString() !== prodId &&
+                                 item.order_status !== 'Cancelled' 
+                             )
+                             let sumofremaining=updatedOrderItems.reduce((accum,current)=>
+                               Math.ceil(current.original_price-(current.original_price*discount/100))*current.quantity+accum,0
+                              )
+                              if(sumofremaining>=order.coupen_id.minimumPurchase){
+                               order.actual_amount=sumofremaining
+                               if(order.coupen_id.coupenType==='flat')
+                               {
+                                 order.total_amount=sumofremaining-order.coupen_id.discountedAmount
+                               }
+                               if(order.coupen_id.coupenType==='discount')
+                                 {
+                                   order.total_amount=Math.ceil(sumofremaining-(sumofremaining*order.coupen_id.discountedAmount/100))
+                                 }
+                                 amount=Math.ceil(orderItem.original_price-(orderItem.original_price*orderItem.discount/100))*orderItem.quantity
+                                 await order.save()
+                              }
+                              else{
+                               let amount = Math.ceil(orderItem.original_price - (orderItem.original_price * orderItem.discount / 100)) * orderItem.quantity;
+                                    
+                               if (!order.remaining) {
+                                 order.remaining = 0; 
+                               }
+                               let remaining = order.remaining; 
+                               if (order.coupen_id.coupenType === 'flat') {
+                                              
+                                 if (remaining && amount >= remaining) {
+                                   let value = amount - remaining;
+                                   order.coupen_id = null; 
+                                   order.remaining = 0; 
+                                   
+                                 }
+                     
+                                 if (amount > order.coupen_id.discountedAmount) {
+                                   let value = amount - order.coupen_id.discountedAmount;
+                                   order.coupen_id = null                                  
+                                   await order.save();
+                                 }
+                             
+                                
+                                 if (amount < order.coupen_id.discountedAmount) {
+                                   let value = Math.abs(amount - order.coupen_id.discountedAmount);
+                                   order.remaining = value; 
+                                 }
+                             
+                     
+                                 order.actual_amount = sumofremaining;
+                                 order.total_amount = sumofremaining;
+                                 await order.save();
+                               }
+                               else {
+                              
+                                 let discount = order.actual_amount - order.total_amount;
+                                  
+                                   if (!order.remaining) {
+                                     order.remaining = 0; 
+                                   }
+                                   let remaining = order.remaining; 
+                                 if (remaining && amount >= remaining) {
+                                   let value = amount - remaining;
+                                   order.coupen_id = null; 
+                                   order.remaining = 0; 
+                                   
+                                 }
+                                 
+                                 if (amount > discount) {
+                                   let value = amount - order.coupen_id.discountedAmount;
+                                   order.remaining = 0; 
+                                   order.coupen_id = null;
+                         
+                                 }
+                             
+                               
+                                 if (amount < discount) {
+                                   let value = Math.abs(amount - discount);
+                                   order.remaining = value; 
+                                 }
+                             
+                     
+                                 order.actual_amount = sumofremaining;
+                                 order.total_amount = sumofremaining;
+                                 await order.save();
+                               }
+                              }
+
 
               }
             }
           }
+
+
+
+          if(newStatus==="Cancelled"){
+            if(order.payment_methods==="online payment"&& !order.coupen_id)
+              {
+                amount=Math.ceil(orderItem.original_price-(orderItem.original_price*orderItem.discount/100))*orderItem.quantity
+                let newprice=order.total_amount-amount
+                const hasPendingOrFailed = order.order_item.some(
+                  (item) => item.payment_status === "pending" || item.payment_status === "failed"
+                )         
+                if (hasPendingOrFailed) {
+                  const result = await Order.updateOne(
+                    { _id:orderId , "order_item.product_id": prodId },
+                    {
+                      $set: {
+                        "order_item.$.payment_status": "unpaid",
+                        total_amount: newprice,
+                        actual_amount:newprice
+                      },
+                    }
+                  );
+  
+                }
+              }
+            }
     
     
 

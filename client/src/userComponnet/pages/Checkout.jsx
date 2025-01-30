@@ -62,7 +62,7 @@ function Checkout() {
           }
           return accumulator; 
         }, 0);
-        console.log(sum)
+    
          if(sum<totalprice)
          {
           toast.error("There is no available balance in Your wallet")

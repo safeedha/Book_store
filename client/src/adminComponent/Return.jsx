@@ -110,7 +110,14 @@ function Return() {
     <Sidebar/>
       <Toaster position="top-center" richColors />
     <div className="flex-1 ml-64 p-6 overflow-y-auto">
-      
+    {returned.length === 0 && (
+        <div className="text-center text-red-500 text-lg mt-5">
+          No return requested product
+        </div>
+      )}
+
+        {returned.length>0&&
+     
       <table className="table-auto border-collapse border border-gray-300 w-full">
       <thead>
         <tr>
@@ -129,6 +136,7 @@ function Return() {
              {returnedItems}
            </tbody>
           </table>
+}
       </div>
     
     </>

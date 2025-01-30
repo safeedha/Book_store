@@ -141,7 +141,7 @@ const Navbar = ({ user }) => {
             </Link>
           )}
           <Link to="/product" className="text-white hover:text-blue-300 font-medium">ProductList</Link>
-          <Link to="/contact" className="text-white hover:text-blue-300 font-medium">Contact</Link>
+          {/* <Link to="/contact" className="text-white hover:text-blue-300 font-medium">Contact</Link> */}
           <Link to="/cart" className="relative">
           <img 
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACTElEQVR4nO2ZzUuUQRyAn62gCDtn4F6CcjMlRLz0FxTRsdUOhqEhhkgIgbf+gg5B4MFLh8g+1JAlvRQR3b14kKBTKumSWOFBcLdi4Lfwsrwfu+v8Zt4XemAu78yPmWdm3vlg4D/p4wawCfyNSXvAJ+AOkCOlbCRI1KdnaZXZCDTyW0SZs8AIsC/lzMikjusiYySuJZQdFZFVMs5J4IfIXG4ytgi8BwoR+beA5Zh86zwXkYkmYgaAQ4nbAbpDJOPyVahNr/kGyw8BlboFYxvokvw24HtMvhoXpbJyA6vXYKCn61Ow5wshMjsuRmZLKovrtdshIxEm05Mg06Mp8kIquh+RfxeoNrgvlRNkypoyY1LJqyNKeJcpBIY+lbt8K/+Js3Vfi5dNTh+N9NGGyHgKRL7aEOlKgcgjGyI52YF9SfwBzmOJNx5FPmCRCY8iQzZFuj1J/AJO2xTJyaboWmQWBRY8iFzVEJl0LPFF61h0xbHINErkAvd47VQF8ijy1pHICso8cCRS1BbpdSCxC5zSFjkmFWmKPMURS8oifa5EphQl1nBIn6LIlEuR4/KOYlviEGjHMSWFy9MTPPBQGjBDxukXkXUyzgm59JgpcY6MU5JRGSbj3BMR8wqcac4EjvWPgUsuzkha3AQOLC7Dn33L2BKpAB2+RGqPpu+kER3yamu+zUXEzLUQo07tsSbYk3n5Zo78YezGxJhl3Qu/Yxr102KMOovSgGVpTF7u3HFP24stxKjTGXFrNN8uWIzBBWaKvJb5bZLp1aQGtRLDP753M+G6dfn9AAAAAElFTkSuQmCC" 
