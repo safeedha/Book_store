@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8000/',
-  withCredentials: true, // Sends cookies with requests
+  baseURL:import.meta.env.VITE_PORT ,
+  withCredentials: true, 
 });
 
 instance.interceptors.request.use(
