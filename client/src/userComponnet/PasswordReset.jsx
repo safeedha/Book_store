@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { useNavigate } from 'react-router-dom';
 import OTP from '../Reusable/OTP'
-import {passwordReset} from '../User_apiservices/Password'
+import {passwordReset} from '../User_apiservices/password'
 
 const PasswordReset = () => {
   const [email, setEmail] = useState("");
