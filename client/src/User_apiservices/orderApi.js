@@ -120,20 +120,20 @@ export const changePaymentStatus = async (status,orderId) => {
 };
 
 
-export const handlePayment = async (Razorpay,totalprice,orderId) => {
+
+
+
+
+export const handlePayment = async (Razorpay, totalprice, orderId) => {
   try {
     const RAZORPAY_KEY_ID = "rzp_test_RmHsQLbeIzESnC";
 
-    // Step 1: Create an order on the backend
-    const response = await fetch("http://localhost:8000/create-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount: totalprice *100}),
+    // Step 1: Create an order on the backend using axios
+    const response = await instance.post("create-order", {
+      amount: totalprice * 100,
     });
 
-    const order = await response.json();
+    const order = response.data;
 
     // Step 2: Configure Razorpay options
     const options = {
@@ -145,28 +145,21 @@ export const handlePayment = async (Razorpay,totalprice,orderId) => {
       order_id: order.id,
       handler: async (response) => {
         try {
-          // Step 3: Verify the payment on the backend
-          const verifyResponse = await fetch("http://localhost:8000/verify-payment", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            }),
+          // Step 3: Verify the payment on the backend using axios
+          const verifyResponse = await instance.post("verify-payment", {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
           });
 
-          const verifyResult = await verifyResponse.json();
+          const verifyResult = verifyResponse.data;
           console.log("Verify Response Status:", verifyResponse.status);
           console.log("Verify Response Body:", verifyResult);
 
           if (verifyResult.message === "Payment verified successfully") {
-            await changePaymentStatus("paid",orderId)
+            await changePaymentStatus("paid", orderId);
             alert("Payment successful!");
           } else {
-            
             alert("Payment verification failed.");
           }
         } catch (err) {
@@ -200,15 +193,104 @@ export const handlePayment = async (Razorpay,totalprice,orderId) => {
         console.error("Error updating payment status:", error);
       }
     });
-    ;
 
-    
     rzpay.open();
   } catch (err) {
     console.error("Error creating order:", err);
     alert("Error creating order: " + err.message);
   }
 };
+
+
+// export const handlePayment = async (Razorpay,totalprice,orderId) => {
+//   try {
+//     const RAZORPAY_KEY_ID = "rzp_test_RmHsQLbeIzESnC";
+
+//     // Step 1: Create an order on the backend
+//     const response = await fetch("http://localhost:8000/create-order", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify({ amount: totalprice *100}),
+//     });
+
+//     const order = await response.json();
+
+//     // Step 2: Configure Razorpay options
+//     const options = {
+//       key: RAZORPAY_KEY_ID,
+//       amount: order.amount,
+//       currency: order.currency,
+//       name: "Book Loom",
+//       description: "Payment for your order",
+//       order_id: order.id,
+//       handler: async (response) => {
+//         try {
+//           // Step 3: Verify the payment on the backend
+//           const verifyResponse = await fetch("http://localhost:8000/verify-payment", {
+//             method: "POST",
+//             headers: {
+//               "Content-Type": "application/json",
+//             },
+//             body: JSON.stringify({
+//               razorpay_order_id: response.razorpay_order_id,
+//               razorpay_payment_id: response.razorpay_payment_id,
+//               razorpay_signature: response.razorpay_signature,
+//             }),
+//           });
+
+//           const verifyResult = await verifyResponse.json();
+//           console.log("Verify Response Status:", verifyResponse.status);
+//           console.log("Verify Response Body:", verifyResult);
+
+//           if (verifyResult.message === "Payment verified successfully") {
+//             await changePaymentStatus("paid",orderId)
+//             alert("Payment successful!");
+//           } else {
+            
+//             alert("Payment verification failed.");
+//           }
+//         } catch (err) {
+//           console.error("Error verifying payment:", err);
+//           alert("Payment verification failed: " + err.message);
+//         }
+//       },
+//       prefill: {
+//         name: "John Doe",
+//         email: "john@example.com",
+//         contact: "9999999999",
+//       },
+//       notes: {
+//         address: "Razorpay Corporate Office",
+//       },
+//       theme: {
+//         color: "#3399cc",
+//       },
+//     };
+
+//     // Step 3: Instantiate Razorpay
+//     const rzpay = new Razorpay(options);
+
+//     // Step 4: Handle payment failure
+//     rzpay.on('payment.failed', async (response) => {
+//       try {
+//         await changePaymentStatus("failed", orderId);
+//         console.error("Payment failed:", response.error);
+//         alert(`Payment failed: ${response.error.description}`);
+//       } catch (error) {
+//         console.error("Error updating payment status:", error);
+//       }
+//     });
+//     ;
+
+    
+//     rzpay.open();
+//   } catch (err) {
+//     console.error("Error creating order:", err);
+//     alert("Error creating order: " + err.message);
+//   }
+// };
 
 
 
