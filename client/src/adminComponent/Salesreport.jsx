@@ -1,281 +1,225 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
-import SalesGraph from "./SalesGraph";
-import { todayreport,weekReport,monthReport,customReport} from "./AdminApi/salesHandle";
+import Swal from 'sweetalert2'
+import { startOfDay, endOfDay } from 'date-fns';
+import { todayreport } from "./AdminApi/Sales";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner"; 
-import * as XLSX from "xlsx";
-import { CSVDownload,CSVLink } from 'react-csv';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 
 
-export default function Salaesreport() {
-  const [chartData, setChartData] = useState({
-    labels: ["Jan 1", "Jan 2", "Jan 3", "Jan 4", "Jan 5", "Jan 6"],
-    datasets: [
-      {
-        label: "Sales in 2024",
-        data: [100, 200, 150, 300, 250, 400],
-        fill: true,
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-      },
-    ],
-  });
- const[csvData,setCsvData]=useState([])
- 
-
-  useEffect(()=>{
-    console.log("hey")
-  console.log(csvData)
-  },[csvData])
-
-  useEffect(()=>{
-      const getDefaultreprt=async()=>{
-        await todayreport(setDeliverd,setChartData);
-      }
-      getDefaultreprt()
-  },[])
-
-
-  const [order,setDeliverd]=useState([])
-  const [orderamount,setOrderamount]=useState(0)
-  const [saleCount,setSaleCount]=useState(0)
-  const [allDiscount,setAlldiscount]=useState(0)
-  const [heading,setHeading]=useState("")
-  useEffect(()=>{
-  const orderAmount=order.reduce((accum,curr)=>accum+curr.total_amount,0)
-  setOrderamount(orderAmount)
-  const count=order.reduce((accum,curr)=>curr.order_item.length+accum,0)
-  setSaleCount(count)
-  const discount=order.reduce((accum,curr)=>accum+(curr.actual_amount-curr.total_amount),0)
-  setAlldiscount(discount)
-  },[order])
-
-
-  const exportToPDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(18);
-    doc.text(heading, 14, 15);
-    const headers = csvData[0];
-    const rows = csvData.slice(1);
-  
-    const verticalData = headers.map((header, index) => {
-      const values = rows.map(row => row[index]).join(', '); // Concatenate values for the header
-      return [header, values]; // Each header and its corresponding values
-    });
-        
-    doc.autoTable({
-      head: [["Field", "Total amount of product"]], // Column titles
-      body: verticalData, // Transformed data
-      startY: 20, // Starting Y position for the table
-    })
-
-    // doc.autoTable({
-    //   head: [headers],
-    //   body: rows,
-    //   startY: 20,
-    // });
-  
-    const finalY = doc.lastAutoTable.finalY || 20;
-  
-
-    doc.setFontSize(14);
-    doc.text(`Total sale: ${orderamount}`,14, finalY + 10);
-    doc.text(`Total Orderd Product: ${saleCount}`, 14, finalY + 20);
-  
-
-    doc.save('data.pdf');
-  };
-  
-
-
-
+export default function Salesreport() {
+  const [reportData, setReportData] = useState([]);
+  const [dateRange, setDateRange] = useState("Today");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const[csvData,setCsvData]=useState([])
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Sales Report ",
-      },
-    },
-    scales: {
-      x: {
-        title: {
-          display: true,
-          text: "Date",
-        },
-      },
-      y: {
-        title: {
-          display: true,
-          text: "Sales (in USD)",
-        },
-        beginAtZero: true,
-      },
-    },
-  };
-
-
-
-
-
-
-  const todayHandle = async () => {
-    try {
-      console.log("clicked");
-      await todayreport(setDeliverd,setChartData,setHeading,setCsvData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const weekHandle=async()=>{
-    try{
-     await weekReport(setDeliverd,setChartData,setHeading,setCsvData)
-    }
-    catch(error)
-    {
-      console.log(error)
-    }
-  }
-
-
-
-  const monthHandle=async()=>{
-    try{
-     await monthReport(setDeliverd,setChartData,setHeading,setCsvData)
-    }
-    catch(error)
-    {
-      console.log(error)
-    }
-  }
-
-
-  const customHandle = async () => {
-    console.log("Start Date: ", startDate);
-    console.log("End Date: ", endDate);
  
-    if (!startDate || !endDate) {
-      toast.error("Please select both start and end dates.");
-      return;
+  useEffect(() => {
+    const fetchTodayReport = async () => {
+      try {
+        if(dateRange==="Today")
+        {
+        const date = new Date();
+        const start = startOfDay(date);  
+        const end = endOfDay(date);      
+        const data = await todayreport(start, end,setReportData); 
+        }
+      } catch (error) {
+        console.error("Error fetching today's report:", error);
+      }
+    };
+
+    fetchTodayReport();
+  }, [dateRange]);
+
+
+
+  const handleDateRangeChange = (e) => {
+    setDateRange(e.target.value);
+    if (e.target.value === "Today") {
+      setStartDate(""); 
+      setEndDate("");
     }
-  
-    const currentDate = new Date().toISOString().split("T")[0]; 
-    if (endDate > currentDate) {
-      toast.error("End date cannot be greater than today's date.");
-      return;
-    }
-    if (endDate <= startDate) {
-      toast.error("End date should be greater than start date.");
-      return;
-    }
-    await customReport(setDeliverd, startDate, endDate,setChartData,setHeading,setCsvData);
   };
+
+  const handleStartDateChange = (e) => {
+    setStartDate(e.target.value);
+  };
+
+  const handleEndDateChange = (e) => {
+    setEndDate(e.target.value);
+  };
+
+  const Apply=async()=>{
+    try{
+      if(new Date(endDate)<new Date(startDate))
+      {
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid Date Range',
+          text: 'End date cannot be earlier than start date.',
+          confirmButtonText: 'OK',
+        });
+        return;
+      }
+    const start=startOfDay(new Date(startDate))
+    const end=endOfDay(new Date(endDate))
+    const data = await todayreport(start, end,setReportData); 
+    }
+    catch(error)
+    {
+      console.log(error)
+    }
+  }
+  const tbody = reportData.map((item, index) => (
+    <tr key={index} className="odd:bg-gray-100 even:bg-white border-b">
+      <td className="px-6 py-3 border">{item._id}</td>
+      <td className="px-6 py-3 border">{item.user_details[0].name}</td>
+      <td className="px-6 py-3 border">
+        {item.product_details.map((prod, idx) => {
+          // Find the matching order item to get quantity
+          const orderItem = item.order_items.find(
+            (order) => order.product_id === prod._id
+          );
+  
+          return (
+            <span key={idx} className="block">
+              {prod.name} ({orderItem?.quantity || 0})<sapn className="text-red-500"> &#8377;{Math.ceil(orderItem. original_price-(orderItem. original_price*orderItem.discount))}/-</sapn> {/* Show quantity */}
+            </span>
+          );
+        })}
+      </td>
+      <td className="px-6 py-3 border">{item.actual_amount+50}</td>
+      <td className="px-6 py-3 border">{item.actual_amount-item.total_amount}</td>
+      <td className="px-6 py-3 border">{item.total_amount+50}</td>
+    </tr>
+  ));
   
 
-
   
-
-
+  
+    const exportToPDF = () => {
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text('Sales Report', 14, 15);
+    
+      // Define table headers
+      const headers = [
+        ["Order ID", "Customer", "Products Details", "Total Price", "Discount", "Net Revenue"]
+      ];
+    
+      const tableData = reportData.map((item) => [
+        item._id,
+        item.user_details[0].name,
+        item.product_details.map((prod, idx) => {
+          const orderItem = item.order_items.find(order => order.product_id === prod._id);
+          const priceWithDiscount = Math.ceil(orderItem.original_price - (orderItem.original_price * orderItem.discount));
+    
+          // Constructing the text without changing the color
+          return `${prod.name} (${orderItem?.quantity || 0}) ${priceWithDiscount}ppu`;
+        }).join("\n"),
+        item.actual_amount + 50,
+        item.actual_amount - item.total_amount,
+        item.total_amount + 50
+      ]);
+    
+      doc.autoTable({
+        head: headers,
+        body: tableData,
+        startY: 20,
+        theme: 'striped',
+    });
+    
+      const finalY = doc.lastAutoTable.finalY || 20;
+    
+      const orderAmount = reportData.reduce((acc, item) => acc + (item.actual_amount + 50), 0);
+      const saleCount = reportData.reduce((acc, item) => acc + item.product_details.length, 0);
+      const allDiscount = reportData.reduce((acc, item) => acc + (item.actual_amount - item.total_amount), 0);
+      const netAmount = reportData.reduce((acc, item) => acc + (item.total_amount + 50), 0);
+    
+      doc.setFontSize(12);
+    
+      doc.line(14, finalY + 5, 190, finalY + 5);
+    
+      doc.text(`Total Sales Amount: ${orderAmount}`, 14, finalY + 15);
+      doc.text(`Total Ordered Products: ${saleCount}`, 14, finalY + 25);
+      doc.text(`Total Discount: ${allDiscount}`, 14, finalY + 35);
+      doc.text(`Total Net Amount: ${netAmount}`, 14, finalY + 45);
+    
+      doc.rect(12, finalY + 10, 180, 40);
+    
+      doc.save('data.pdf');
+    };
+    
   return (
-    <div className="flex">
-      <Sidebar />
-      <Toaster position="top-center" richColors />
-      <div className="ml-64 p-6 flex-1 bg-gray-300 min-h-screen">
-        <h2 className="text-xl font-bold mb-4">Sales Report</h2>
-        
-       
-        {/* Display Sales Info Above the Graph */}
-        <div className="mb-4 grid grid-cols-3 gap-4">
-          <div className="bg-white p-4 rounded shadow-md">
-            <h3 className="text-lg font-semibold">Sales Count</h3>
-            <p>{saleCount}</p>
-          </div>
-          <div className="bg-white p-4 rounded shadow-md">
-            <h3 className="text-lg font-semibold">Total Order Amount</h3>
-            <p>${orderamount}</p>
-          </div>
-          <div className="bg-white p-4 rounded shadow-md">
-            <h3 className="text-lg font-semibold">Overall Discount</h3>
-            <p>${allDiscount}</p>
-          </div>
-        </div>
-
-        {/* Date Range Filter */}
-        <div className="mb-4">
-          <button
-            onClick={() => todayHandle()}
-            className="mr-2 px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Today
-          </button>
-          <button
-            onClick={() =>weekHandle()}
-            className="mr-2 px-4 py-2 bg-green-500 text-white rounded"
-          >
-            Week
-          </button>
-          <button
-            onClick={() => monthHandle("1-month")}
-            className="mr-2 px-4 py-2 bg-purple-500 text-white rounded"
-          >
-            Month
-          </button>
-        
-        </div>
-        
-        {/* Custom Date Range Picker */}
-        <div className="mb-4">
-          <label className="mr-4">Start Date:</label>
+    <div className="flex flex-col">
+    <Sidebar />
+    <Toaster position="top-center" richColors />
+  
+    <div className="ml-64 mt-5 flex items-center space-x-4">
+      {/* Date Range Selector */}
+      <select
+        onChange={handleDateRangeChange}
+        value={dateRange}
+        className="border-2 border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"
+      >
+        <option value="Today">Today</option>
+        <option value="Custom range">Custom range</option>
+      </select>
+  
+      {dateRange === "Custom range" && (
+        <div className="flex items-center space-x-4">
           <input
             type="date"
             value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="px-4 py-2 border rounded"
+            onChange={handleStartDateChange}
+            className="border-2 border-gray-300 rounded-md px-4 py-2"
           />
-          <label className="mr-4 ml-4">End Date:</label>
           <input
             type="date"
             value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="px-4 py-2 border rounded"
+            onChange={handleEndDateChange}
+            className="border-2 border-gray-300 rounded-md px-4 py-2"
           />
           <button
-            onClick={customHandle}
-            className="ml-4 px-4 py-2 bg-gray-700 text-white rounded"
+            className="bg-green-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-green-400 active:bg-green-600 focus:outline-none transition duration-300 ease-in-out"
+            onClick={Apply}
           >
-            Apply Range
-          </button>
-
-          <button
-            onClick={exportToPDF}
-            className="ml-4 px-4 py-2 bg-gray-700 text-white rounded"
-          >
-          Download Pdf
-          </button>
-
-          <button
-         
-            className="ml-4 px-4 py-2 bg-gray-700 text-white rounded"
-          >
-           <CSVLink data={csvData}>Preview xcel</CSVLink>;
+            Apply
           </button>
         </div>
-
-       
-     
-        <SalesGraph data={chartData} options={options} />
-      </div>
+      )}
+  
+    
+      <button className="ml-auto bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-400 active:bg-blue-600 focus:outline-none transition duration-300 ease-in-out" onClick={exportToPDF}>
+        Export PDF
+      </button>
     </div>
-  )
-  }
+  
+    {/* Table Container */}
+    <div className="ml-48 mt-4  bg-white shadow-lg rounded-lg overflow-hidden">
+      <table className="w-full border-collapse text-sm">
+        <thead className="bg-gray-700 text-white text-xs uppercase">
+          <tr>
+            <th className="px-6 py-3 text-left border">Order ID</th>
+            <th className="px-6 py-3 text-left border">Customer</th>
+            <th className="px-6 py-3 text-left border">Products Details</th>
+            <th className="px-6 py-3 text-left border">Total price</th>
+            <th className="px-6 py-3 text-left border">Discount</th>
+            <th className="px-6 py-3 text-left border">Net Revenue</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          {tbody}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  );
+}
+

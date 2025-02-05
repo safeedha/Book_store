@@ -11,6 +11,7 @@ const Sidebar = () => {
 
   const menuItems = [
     { name: "Dashboard", path: "/admin/dashboard", icon: <FaTachometerAlt /> },
+    { name: "Sales Report", path: "/admin/sales", icon: <FaTachometerAlt /> },
     { name: "Customer", path: "/admin/customer", icon: <FaUser /> },
     { name: "Product", path: "/admin/product", icon: <FaProductHunt /> },
     { name: "Orders", path: "/admin/orders", icon: <FaBox /> },
@@ -33,7 +34,7 @@ const Sidebar = () => {
   
       <ul className="mt-1">
         {menuItems.map((item, index) => (
-          <li key={index} className="mb-1">
+          <li key={index} >
             <Link
               to={item.path}
               className="flex items-center p-4 hover:bg-gray-700 rounded transition duration-300"

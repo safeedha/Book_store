@@ -26,6 +26,7 @@ function AdminRoutes() {
    <>
   
        <Route path='/admin/dashboard' element={<Adminprotect><Dashbord/></Adminprotect>} />
+       <Route path='/admin/sales' element={<Adminprotect><Salaesreport/></Adminprotect>} />
         <Route path="/admin/customer" element={<Adminprotect><Getcustomer /></Adminprotect>} />
         <Route path="/admin/customer" element={<Adminprotect><Getcustomer /></Adminprotect>} />
         <Route path="/admin/customer/:id" element={<Adminprotect><Editcustomer /></Adminprotect>} />

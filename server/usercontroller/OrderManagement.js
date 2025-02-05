@@ -324,9 +324,8 @@ const cancelOrder = async (req, res,next) => {
 
 
 
-
-      if(order.payment_methods==="online payment"||order.payment_methods==="wallet payment"&&order.coupen_id)
-      {
+         if ((order.payment_methods === "online payment" || order.payment_methods === "wallet payment") && order.coupen_id) 
+         {
         let updatedOrderItems = order.order_item.filter(
           item =>
             item.product_id.toString() !== productId &&

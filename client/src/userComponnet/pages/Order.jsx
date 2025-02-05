@@ -14,6 +14,7 @@ import 'jspdf-autotable';
 import {useRazorpay} from "react-razorpay"
 import {changePaymentStatus} from "../../User_apiservices/orderApi"
 import instance from "@/instance";
+import Swal from "sweetalert2";
 
 
 
@@ -57,93 +58,6 @@ export default function Order() {
 
 const[csvData,setCsvData]=useState([])
 
-// const Retry = async (total,orderId) => {
-//   try {
-   
-//     const response = await fetch("http://localhost:8000/create-order", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ amount: total * 100 }),
-//     });
-
-//     const order = await response.json();
-
-//     const options = {
-//       key: RAZORPAY_KEY_ID,
-//       amount: order.amount,
-//       currency: order.currency,
-//       name: "Book Loom",
-//       description: "Payment for your order",
-//       order_id: order.id,
-//       handler: async (response) => {
-//         try {
-       
-//           const verifyResponse = await fetch("http://localhost:8000/verify-payment", {
-//             method: "POST",
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({
-//               razorpay_order_id: response.razorpay_order_id,
-//               razorpay_payment_id: response.razorpay_payment_id,
-//               razorpay_signature: response.razorpay_signature,
-//             }),
-//           });
-
-//           const verifyResult = await verifyResponse.json();
-//           console.log("Verify Response Status:", verifyResponse.status);
-//           console.log("Verify Response Body:", verifyResult);
-
-//           if (verifyResult.message === "Payment verified successfully") {
-//              await changePaymentStatus("paid",orderId)
-//              setStatus((prev)=>!prev)
-//             alert("Payment successful!");
-//           } else {
-            
-//             alert("Payment verification failed.");
-//           }
-//         } catch (err) {
-//           console.error("Error verifying payment:", err);
-//           alert("Payment verification failed: " + err.message);
-//         }
-//       },
-//       prefill: {
-//         name: "John Doe",
-//         email: "john@example.com",
-//         contact: "9999999999",
-//       },
-//       notes: {
-//         address: "Razorpay Corporate Office",
-//       },
-//       theme: {
-//         color: "#3399cc",
-//       },
-//     };
-
-   
-//     const rzpay = new Razorpay(options);
-
-   
-//     rzpay.on('payment.failed', async (response) => {
-//       try {
-
-//         console.error("Payment failed:", response.error);
-//         alert(`Payment failed: ${response.error.description}`);
-//       } catch (error) {
-//         console.error("Error updating payment status:", error);
-//       }
-//     });
-//     ;
-
-    
-//     rzpay.open();
-//   } catch (err) {
-//     console.error("Error creating order:", err);
-//     alert("Error creating order: " + err.message);
-//   }
-// };
 
 
 
@@ -353,35 +267,6 @@ const exportToPDF = () => {
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentOrders = order.slice(indexOfFirstItem, indexOfLastItem);
@@ -391,14 +276,36 @@ const exportToPDF = () => {
     setCurrentPage(pageNumber);
   };
 
+ 
+
+
   const cancelHandle = async (orderId, productId) => {
-    try {
-      const response = await cancelOrder(orderId, productId);
-      setOrder(response.data.original);
-    } catch (error) {
-      console.error(error);
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to cancel this order?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, cancel it!",
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        const response = await cancelOrder(orderId, productId);
+        setOrder(response.data.original);
+        await Swal.fire("Canceled!", "Your order has been canceled.", "success");
+      } catch (error) {
+        console.error(error);
+        await Swal.fire("Error!", "Something went wrong.", "error");
+      }
     }
   };
+  
+
+
+
+
 
   const viewHandle = (itemId, productId) => {
     navigate(`/order/${itemId}/product/${productId}`);
@@ -454,6 +361,7 @@ const orderDetail = currentOrders.map((item, index) => (
           <p className="text-sm">Pincode: {item.shipping_address.pincode}</p>
         </div>
         <div className="flex gap-2">
+          { item.order_item?.every((prod) => prod.order_status === "Delivered")&&(
           <button
             onClick={() => {
               setCsvData(item);
@@ -462,7 +370,8 @@ const orderDetail = currentOrders.map((item, index) => (
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
           >
             Invoice
-          </button>
+          </button>)
+         }
           {item.total_amount > 0 &&
             item.order_item?.some((prod) => prod.order_status === "Pending") &&
             item.order_item?.some((prod) => prod.payment_status === "failed" || prod.payment_status === "pending") && (

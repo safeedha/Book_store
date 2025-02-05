@@ -12,7 +12,7 @@ const offer=require("../adminController/offercontroll")
 const returned=require("../adminController/returnHandle")
 const sales=require('../adminController/salesHandle')
 const trend=require('../adminController/trendingHandle')
-
+const sale=require("../adminController/adminSales")
 
 
 
@@ -65,6 +65,7 @@ admin_routes.get('/sales/custom', verifyUser, sales.customReportHandle)
 admin_routes.get('/topproduct', verifyUser, trend.getTopProduct)
 admin_routes.get('/topcategory', verifyUser, trend.getTopCategory)
 
+admin_routes.get('/today', verifyUser, sale.todayreport)
 
 
 

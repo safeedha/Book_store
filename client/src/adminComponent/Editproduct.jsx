@@ -95,9 +95,20 @@ useEffect(()=>{
 
   const handleSubmit = async(e) => {
     try{
-      console.log("hello")
+      
       e.preventDefault();
-       
+      if (!productName || !description || !author || !sku) {
+        let emptyFields = [];
+      
+        if (!productName) emptyFields.push("Product Name");
+        if (!description) emptyFields.push("Description");
+        if (!author) emptyFields.push("Author");
+        if (!sku) emptyFields.push("SKU");
+      
+        toast.error(`The following fields are required: ${emptyFields.join(", ")}`);
+        return;
+      }
+      
        if (productName.trim().length === 0) {
             toast.error("Product Name cannot be empty");
             return;
@@ -133,7 +144,7 @@ useEffect(()=>{
               const uploadResponse = await axios.post(
                 'https://api.cloudinary.com/v1_1/dwerqkqou/image/upload',
                 formData
-              );
+              )
               const imageUrl = uploadResponse.data.secure_url;
              u1=imageUrl
        }
@@ -263,7 +274,6 @@ useEffect(()=>{
             type="text"
             value={productName}
             onChange={(e) => setProductName(e.target.value)}
-            required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -273,7 +283,6 @@ useEffect(()=>{
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -284,7 +293,6 @@ useEffect(()=>{
             type="text"
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
-            required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
@@ -294,7 +302,6 @@ useEffect(()=>{
           <select
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="" disabled>Select Language</option>
@@ -309,7 +316,6 @@ useEffect(()=>{
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
-            required
             min="0"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
@@ -320,7 +326,6 @@ useEffect(()=>{
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             <option value="" disabled>Select Category</option>
@@ -345,7 +350,6 @@ useEffect(()=>{
             type="text"
             value={sku}
             onChange={(e) => setSku(e.target.value)}
-            required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
