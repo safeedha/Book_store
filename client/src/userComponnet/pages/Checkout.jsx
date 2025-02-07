@@ -691,10 +691,10 @@ function Checkout() {
             <span className='ml-2'>discount:</span>
             <span className="font-medium text-green-600">-&#8377;{discount}</span>
           </div>
-          <div className="flex justify-between">
+          {/* <div className="flex justify-between">
             <span className='ml-2'>Shipping charge:</span>
             <span className="font-medium text-green-600">Free</span>
-          </div>
+          </div> */}
           <hr className="my-2 border-t-2 border-gray-300" />
           <div className="flex justify-between text-lg font-semibold ml-2">
             <span>Total:&#8377;{totalprice}</span>

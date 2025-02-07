@@ -33,6 +33,7 @@ function GetProduct() {
   const [name,setName]=useState("")
   const [expiryDate,setExpiryDate]=useState(null)
   const [discount,setDiscount]=useState(null)
+  const [prodname,setProdname]=useState(null)
   const rowsPerPage = 3; 
 
 
@@ -173,7 +174,20 @@ function GetProduct() {
       </td>
     </tr>
   ));
+  const Search = () => {
+    // Filter the products based on the search term
+    const filtered = product.filter((doc) =>
+      doc.name.toLowerCase().includes(prodname.toLowerCase())
+    );
   
+    // Sort the filtered data to make the first row the matching product
+    const sorted = [
+      ...filtered,
+      ...product.filter((doc) => !doc.name.toLowerCase().includes(prodname.toLowerCase())),
+    ];
+  
+    setProduct(sorted);
+  };
   return (
     <div className="flex">
       <Toaster position="top-center" richColors />
@@ -182,15 +196,33 @@ function GetProduct() {
       </div>
       <div className="bg-gray-200 min-h-screen min-w-full">
       <div className="flex-1 ml-64 p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Product Management</h2>
-          <button
-            onClick={addProduct}
-            className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
-          >
-            ADD PRODUCT
-          </button>
-        </div>
+      <div className="flex justify-between items-center mb-6">
+  <h2 className="text-2xl font-bold">Product Management</h2>
+  
+  {/* Wrapping input and Search button in a div */}
+            <div className="flex items-center gap-2">
+              <input 
+                type="text" 
+                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter name..."
+                onChange={(e) =>setProdname(e.target.value)} 
+              />
+              <button
+                onClick={Search}
+                className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
+              >
+                Search
+              </button>
+            </div>
+
+            <button
+              onClick={addProduct}
+              className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
+            >
+              ADD PRODUCT
+            </button>
+          </div>
+
         <table className="w-full table-auto border-collapse border border-gray-300">
           <thead>
             <tr>

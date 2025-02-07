@@ -35,6 +35,7 @@ export default function Dashbord() {
   const [header, setHeader] = useState([[]])
   const [netamount, setNetamount] = useState(0)
   const [xaxis,setXasis]=useState("")
+  const [report,setReport]=useState("Today's Sales")
 
  
 
@@ -48,9 +49,9 @@ export default function Dashbord() {
 
   
   useEffect(() => {
-    const orderAmount = order.reduce((accum, curr) => accum + curr.actual_amount, 0);
+    const orderAmount = order.reduce((accum, curr) => accum + (curr.actual_amount+50), 0);
     setOrderamount(orderAmount);
-    const orderNet = order.reduce((accum, curr) => accum + curr.total_amount, 0);
+    const orderNet = order.reduce((accum, curr) => accum + (curr.total_amount+50), 0);
     setNetamount(orderNet);
     const quantity = order
     .map((item) => item.order_item.map((single) => single.quantity))
@@ -130,6 +131,7 @@ export default function Dashbord() {
 
   const todayHandle = async () => {
     try {
+      setReport("Today's sales")
       await todayreport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin);
     } catch (error) {
       console.log(error);
@@ -138,6 +140,7 @@ export default function Dashbord() {
 
   const weekHandle=async()=>{
     try{
+      setReport("Weekly  sales")
      await weekReport(setDeliverd,setChartData,setHeading,setCsvData,setHeader,setXasis,dispatch,logoutAdmin)
     }
     catch(error)
@@ -150,6 +153,7 @@ export default function Dashbord() {
 
   const monthHandle=async()=>{
     try{
+      setReport("Monthly  sales")
      await monthReport(setDeliverd,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin)
     }
     catch(error)
@@ -160,8 +164,6 @@ export default function Dashbord() {
 
 
   const customHandle = async () => {
-    console.log("Start Date: ", startDate);
-    console.log("End Date: ", endDate);
  
     if (!startDate || !endDate) {
       toast.error("Please select both start and end dates.");
@@ -177,6 +179,7 @@ export default function Dashbord() {
       toast.error("End date should be greater than start date.");
       return;
     }
+    setReport(` sales from ${startDate} to ${endDate}`)
     await customReport(setDeliverd, startDate, endDate,setChartData,setHeading,setCsvData,setXasis,setHeader,dispatch,logoutAdmin);
   };
   
@@ -190,7 +193,7 @@ export default function Dashbord() {
       <Sidebar />
       <Toaster position="top-center" richColors />
       <div className="ml-48 p-2 flex-1 bg-gray-300 min-h-screen w-full">
-        <h2 className="text-xl font-bold mb-4">Sales Report</h2>
+        <h2 className="text-xl font-bold mb-4">{report}</h2>
         
        
       

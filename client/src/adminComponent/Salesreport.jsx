@@ -136,9 +136,17 @@ export default function Salesreport() {
       const finalY = doc.lastAutoTable.finalY || 20;
     
       const orderAmount = reportData.reduce((acc, item) => acc + (item.actual_amount + 50), 0);
-      const saleCount = reportData.reduce((acc, item) => acc + item.product_details.length, 0);
+      // const saleCount = reportData.reduce((acc, item) => acc + item.product_details.length, 0);
       const allDiscount = reportData.reduce((acc, item) => acc + (item.actual_amount - item.total_amount), 0);
       const netAmount = reportData.reduce((acc, item) => acc + (item.total_amount + 50), 0);
+      // const saleCount = reportData.map(( item,index) =>  item.order_items.reduce((accu,sale)=>accu+sale.quantity,0))
+      const saleCount = reportData
+      .map(item => item.order_items.reduce((accu, sale) => accu + sale.quantity, 0))
+      .reduce((accu, count) => accu + count, 0);
+    
+    
+    
+      
     
       doc.setFontSize(12);
     
@@ -198,8 +206,22 @@ export default function Salesreport() {
         Export PDF
       </button>
     </div>
-  
-    {/* Table Container */}
+
+
+    {reportData.length === 0 && dateRange === 'Today' && (
+  <div className="flex flex-col items-center justify-center mt-28 p-6  "> 
+    <p className="text-lg font-semibold text-gray-600">No sales recorded today</p>
+  </div>
+)}
+
+
+{reportData.length === 0 && dateRange === 'Custom range' && (
+  <div className="flex flex-col items-center justify-center mt-28 p-6  "> 
+    <p className="text-lg font-semibold text-gray-600">No sales recorded from {startDate} to {endDate} </p>
+  </div>
+)}
+ 
+    {reportData.length >0 &&
     <div className="ml-48 mt-4  bg-white shadow-lg rounded-lg overflow-hidden">
       <table className="w-full border-collapse text-sm">
         <thead className="bg-gray-700 text-white text-xs uppercase">
@@ -218,6 +240,8 @@ export default function Salesreport() {
         </tbody>
       </table>
     </div>
+   
+    }
   </div>
   
   );
