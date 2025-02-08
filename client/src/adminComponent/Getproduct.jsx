@@ -187,6 +187,7 @@ function GetProduct() {
     ];
   
     setProduct(sorted);
+    setCurrentPage(1)
   };
   return (
     <div className="flex">
@@ -199,7 +200,7 @@ function GetProduct() {
       <div className="flex justify-between items-center mb-6">
   <h2 className="text-2xl font-bold">Product Management</h2>
   
-  {/* Wrapping input and Search button in a div */}
+ 
             <div className="flex items-center gap-2">
               <input 
                 type="text" 

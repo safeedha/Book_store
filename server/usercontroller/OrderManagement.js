@@ -375,11 +375,11 @@ const cancelOrder = async (req, res,next) => {
               await order.save();
             }
         
-           
-            if (amount < order.coupen_id.discountedAmount) {
+            if (amount && order.coupen_id && amount < order.coupen_id.discountedAmount) {
               let value = Math.abs(amount - order.coupen_id.discountedAmount);
               order.remaining = value; 
-            }
+          }
+          
         
 
             order.actual_amount = sumofremaining;

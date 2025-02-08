@@ -14,7 +14,7 @@ function Getcustomer() {
   const [user, setUser] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); 
   const [itemsPerPage] = useState(5); 
-
+  const [username,setUsername]=useState("")
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
@@ -60,7 +60,20 @@ function Getcustomer() {
 
   // Total pages
   const totalPages = Math.ceil(user.length / itemsPerPage);
-
+   const Search=()=>{
+    const filtered = user.filter((doc) =>
+      doc.name.toLowerCase().includes(username.toLowerCase())
+    );
+  
+    // Sort the filtered data to make the first row the matching product
+    const sorted = [
+      ...filtered,
+      ...user.filter((doc) => !doc.name.toLowerCase().includes(username.toLowerCase())),
+    ];
+  
+    setUser(sorted);
+    setCurrentPage(1)
+   }
   return (
     <div className="flex">
       <div>
@@ -68,6 +81,34 @@ function Getcustomer() {
       </div>
       <div className="bg-gray-200 min-h-screen min-w-full">
       <div className="flex-1 ml-60 p-6 ">
+
+      <div className="flex justify-between items-center mb-6">
+  <h2 className="text-2xl font-bold">Customers</h2>
+  
+ 
+            <div className="flex items-center gap-2">
+              <input 
+                type="text" 
+                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter name..."
+                onChange={(e) =>setUsername(e.target.value)} 
+              />
+              <button
+                onClick={Search}
+                className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
+              >
+                Search
+              </button>
+            </div>
+
+           
+          </div>
+
+
+
+
+
+
         <table className="table-auto border-collapse border border-gray-300 w-full">
           <thead>
             <tr>

@@ -185,7 +185,7 @@ const exportToPDF = () => {
 
   // Shipping Address
   let leftX = 14; // Left column starting point
-  doc.text("Shipping Address:", leftX, currentY);
+  doc.text("Shipping Address:", leftX+6, currentY);
   currentY += lineHeight - 2;
   doc.text(`${csvData.shipping_address.name}`, leftX + 6, currentY);
   currentY += lineHeight - 2;
@@ -208,17 +208,17 @@ const exportToPDF = () => {
   // Company Details
   let rightX = 100; // Right column starting point
   currentY -= (lineHeight - 2) * 5; // Reset currentY to align with Shipping Address
-  doc.text("Company Details:", rightX, currentY);
+  doc.text("Company Details:", rightX+20, currentY);
   currentY += lineHeight - 2;
-  doc.text("BookLOOM", rightX + 6, currentY);
+  doc.text("BookLOOM", rightX + 20, currentY);
   currentY += lineHeight - 2;
-  doc.text("Phone: 123-456-7890", rightX + 6, currentY);
+  doc.text("Phone: 123-456-7890", rightX + 20, currentY);
   currentY += lineHeight - 2;
-  doc.text("Email: support@bookloom.com", rightX + 6, currentY);
+  doc.text("Email: support@bookloom.com", rightX + 20, currentY);
   currentY += lineHeight - 2;
-  doc.text("Address: 123 Book Street,", rightX + 6, currentY);
+  doc.text("Address: 123 Book Street,", rightX + 20, currentY);
   currentY += lineHeight - 2;
-  doc.text("Cityville, BK 56789", rightX + 6, currentY);
+  doc.text("Cityville, BK 56789", rightX + 20, currentY);
 
   currentY += lineHeight; // Add spacing before the table
 

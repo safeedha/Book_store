@@ -30,6 +30,7 @@ function GetCategory() {
   const [expiryDate,setExpiryDate]=useState(null)
   const [discount,setDiscount]=useState(null)
   const [catid,SetcatId]=useState("")
+  const [catname,setCatname]=useState("")
   const rowsPerPage = 3;
 
   function  Addoffer(id) {
@@ -100,6 +101,20 @@ function GetCategory() {
     navigate(`/admin/category/${id}`);
   };
 
+  const Search=()=>{
+    const filtered = category.filter((doc) =>
+      doc.name.toLowerCase().includes(catname.toLowerCase())
+    );
+  
+    // Sort the filtered data to make the first row the matching product
+    const sorted = [
+      ...filtered,
+      ...category.filter((doc) => !doc.name.toLowerCase().includes(catname.toLowerCase())),
+    ];
+  
+    setCategory(sorted);
+    setCurrentPage(1)
+  }
   
 
   return (
@@ -110,6 +125,20 @@ function GetCategory() {
       <div className="flex-1 ml-64 p-6 overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Category Management</h2>
+          <div className="flex items-center gap-2">
+              <input 
+                type="text" 
+                className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter name..."
+                onChange={(e) =>setCatname(e.target.value)} 
+              />
+              <button
+                onClick={Search}
+                className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
+              >
+                Search
+              </button>
+            </div>
           <button
             onClick={addCategory}
             className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"

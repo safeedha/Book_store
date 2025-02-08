@@ -60,6 +60,7 @@ const getApprove=async(req,res,next)=>{
  try{
      const {orderId,productId,userId}=req.query
      const order=await Order.findById(orderId).populate('coupen_id')
+     console.log(order)
      const product=await Product.findById(productId)
      let wallet =await Wallet.findOne({user_id:userId})
      let category=await Category.findById(product.categoryId)
@@ -95,6 +96,7 @@ const getApprove=async(req,res,next)=>{
         required.return_request.is_requested=false
         required.return_request.is_approved=true
         required.order_status="Returned"
+          required.payment_status="refund"
         let updatedOrderItems = orderItem.filter(
           item =>
             item.product_id.toString() !== productId &&
@@ -148,7 +150,7 @@ const getApprove=async(req,res,next)=>{
                   }
               
                  
-                  if (amount < order.coupen_id.discountedAmount) {
+                  if (order && order.coupen_id && amount < order.coupen_id.discountedAmount) {
                     let value = Math.abs(amount - order.coupen_id.discountedAmount);
                     order.remaining = value; 
                   }
