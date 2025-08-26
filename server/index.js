@@ -16,7 +16,7 @@ const razorpay = new Razorpay({
 
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/BookLoom')
+mongoose.connect('mongodb+srv://mksafeedha:Safeedha@cluster0.ay97j.mongodb.net/BOOKLOOM?retryWrites=true&w=majority&appName=Cluster0')
   .then(() => console.log('Connected!'))
 
 const app = express();

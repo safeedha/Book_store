@@ -22,29 +22,27 @@ const otpGeneration = async (email) => {
       );
      
     } else {
-      const newOtp = await OtpModel.create({ email, otp });
-
+      const newOtp = await OtpModel.create({ email, otp });       
     }
-
+  
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
         user: process.env.EMAIL_USER,  
-        pass: process.env.EMAIL_PASS,  
+        pass: 'lfyk ynde oime hser'  
       },
     });
+     
     await transporter.sendMail({
-      from: process.env.EMAIL_USER,  
+      from: "mksafeedha@gmail.com",  
       to: email,
       subject: 'OTP Verification',
       text: `Your OTP for verification is: ${otp}`,
     });
 
- 
+    console.log("otp sented")
 
   } catch (error) {
-   
-
     if (error instanceof Error) {
       throw new Error('OTP generation or email sending failed: ' + error.message);
     }
