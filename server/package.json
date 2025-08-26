@@ -1,4 +1,22 @@
 {
+  "name": "bookstore-app",
+  "version": "1.0.0",
+  "description": "A MERN stack bookstore application with user authentication, payments, and analytics.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MERN",
+    "bookstore",
+    "express",
+    "react",
+    "mongodb",
+    "node"
+  ],
+  "author": "Safeedha MK",
+  "license": "MIT",
   "dependencies": {
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
@@ -15,3 +33,4 @@
     "react-chartjs-2": "^5.2.0"
   }
 }
+
