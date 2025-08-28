@@ -22,7 +22,7 @@ mongoose.connect('mongodb+srv://mksafeedha:Safeedha@cluster0.ay97j.mongodb.net/B
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', 
+  origin: 'https://www.book-loom.safeedha.site', 
   credentials: true, 
 }));
 
