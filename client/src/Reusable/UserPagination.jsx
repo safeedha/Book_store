@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const UserPagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
@@ -10,7 +10,9 @@ const UserPagination = ({ currentPage, totalPages, onPageChange }) => {
       >
         Previous
       </button>
-      <span className="text-gray-600">Page {currentPage} of {totalPages}</span>
+      <span className="text-gray-600">
+        Page {currentPage} of {totalPages}
+      </span>
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}

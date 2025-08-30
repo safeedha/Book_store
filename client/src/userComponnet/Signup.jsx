@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from "react-router-dom";
-import { Toaster } from "@/components/ui/sonner";
-import { toast } from "sonner";
+import { Link } from 'react-router-dom';
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import {Createaccount} from '../User_apiservices/account'
+import { Createaccount } from '../User_apiservices/account';
 
 const Signup = () => {
-  const Navigate=useNavigate()
+  const Navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,56 +23,48 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = async(e) => {
-    try{
-    e.preventDefault();
-    if(formData.name.trim().length===0)
-    {
-      toast.error("name should not be empty")
-       return
-    }
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (formData.name.trim().length === 0) {
+        toast.error('name should not be empty');
+        return;
+      }
 
-    if (!/^\d{10}$/.test(formData.mobileNo)) {
-      toast.error("Mobile number should be a 10-digit number");
-      return;
-    }
-    
- 
-    if (formData.password !== formData.confirmPassword) {
-      toast.error('Passwords do not match!');
-      return;
-    }
+      if (!/^\d{10}$/.test(formData.mobileNo)) {
+        toast.error('Mobile number should be a 10-digit number');
+        return;
+      }
 
-    const hasLetter = /[a-zA-Z]/.test(formData.password); 
-    const hasNumber = /\d/.test(formData.password);
-    if (!(hasLetter && hasNumber)) {
-        toast.error("password should contain letter and number")
-        return
-    }
+      if (formData.password !== formData.confirmPassword) {
+        toast.error('Passwords do not match!');
+        return;
+      }
 
-    if(formData.password.length<5)
-    {
-      toast.error("password should contain minimum 5 letter")
-      return
-    }
-    const response=await Createaccount(formData)
-    console.log(response)
-    if(response.status==201)
-    {
-      toast.success("acoount created suceesfully please verify Your mail")
-      setTimeout(() => {
-        Navigate("/otp", { state: { email: formData.email } });
-      }, 2000);
-    }
-  }
-  catch(error)
-  { 
-    if(error.response.status===409)
-    {
-      toast.error(error.response.data.message)
-    }  
-  }
+      const hasLetter = /[a-zA-Z]/.test(formData.password);
+      const hasNumber = /\d/.test(formData.password);
+      if (!(hasLetter && hasNumber)) {
+        toast.error('password should contain letter and number');
+        return;
+      }
 
+      if (formData.password.length < 5) {
+        toast.error('password should contain minimum 5 letter');
+        return;
+      }
+      const response = await Createaccount(formData);
+      console.log(response);
+      if (response.status == 201) {
+        toast.success('acoount created suceesfully please verify Your mail');
+        setTimeout(() => {
+          Navigate('/otp', { state: { email: formData.email } });
+        }, 2000);
+      }
+    } catch (error) {
+      if (error.response.status === 409) {
+        toast.error(error.response.data.message);
+      }
+    }
   };
 
   return (
@@ -87,7 +79,12 @@ const Signup = () => {
           <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Name
+              </label>
               <input
                 type="text"
                 name="name"
@@ -100,7 +97,12 @@ const Signup = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -113,7 +115,12 @@ const Signup = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="mobileNo" className="block text-sm font-medium text-gray-700">Mobile Number</label>
+              <label
+                htmlFor="mobileNo"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Mobile Number
+              </label>
               <input
                 type="text"
                 name="mobileNo"
@@ -126,7 +133,12 @@ const Signup = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
               <input
                 type="password"
                 name="password"
@@ -139,7 +151,12 @@ const Signup = () => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">Confirm Password</label>
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Confirm Password
+              </label>
               <input
                 type="password"
                 name="confirmPassword"
@@ -163,7 +180,10 @@ const Signup = () => {
           <div className="mt-4 text-center">
             <p className="text-sm text-gray-600">
               Already have an account?{' '}
-              <Link to="/login" className="text-indigo-600 hover:text-indigo-700">
+              <Link
+                to="/login"
+                className="text-indigo-600 hover:text-indigo-700"
+              >
                 Log in
               </Link>
             </p>

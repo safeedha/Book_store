@@ -60,12 +60,10 @@
 
 // export default Payment;
 
-import React from 'react'
+import React from 'react';
 
 function Payment() {
-  return (
-    <div>Payment</div>
-  )
+  return <div>Payment</div>;
 }
 
-export default Payment
+export default Payment;

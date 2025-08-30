@@ -7,7 +7,7 @@ import { getWishList, delteFromwishlist } from '@/User_apiservices/wishlist';
 import { useNavigate } from 'react-router-dom';
 import UserPagination from '@/Reusable/UserPagination';
 import { useDispatch } from 'react-redux';
-import {logoutUser} from '../../feature/userSlice'
+import { logoutUser } from '../../feature/userSlice';
 
 function WishList() {
   const user = useSelector((state) => state.user.userInfo);
@@ -15,12 +15,12 @@ function WishList() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4; // Number of items per page
   const navigate = useNavigate();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchWishList = async () => {
       try {
-        await getWishList(setWish,dispatch,logoutUser);
+        await getWishList(setWish, dispatch, logoutUser);
       } catch (error) {
         console.error('Error fetching wishlist:', error);
       }
@@ -62,9 +62,7 @@ function WishList() {
           {item.productId.name}
         </p>
         {!item.productId.offerId ? (
-          <p className="text-md text-green-600 mt-1">
-            ${item.productId.price}
-          </p>
+          <p className="text-md text-green-600 mt-1">${item.productId.price}</p>
         ) : new Date(item.productId.offerId.expiryDate) > new Date() ? (
           <div>
             <p className="text-md text-red-600 mt-1 line-through">
@@ -73,15 +71,12 @@ function WishList() {
             <p className="text-md text-green-600 mt-1">
               $
               {item.productId.price -
-                (item.productId.price *
-                  item.productId.offerId.offerAmount) /
+                (item.productId.price * item.productId.offerId.offerAmount) /
                   100}
             </p>
           </div>
         ) : (
-          <p className="text-md text-gray-600 mt-1">
-            ${item.productId.price}
-          </p>
+          <p className="text-md text-gray-600 mt-1">${item.productId.price}</p>
         )}
       </div>
       <div>

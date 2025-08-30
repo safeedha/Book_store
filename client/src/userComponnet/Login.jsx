@@ -1,43 +1,49 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
-import instance from "../instance";
+import instance from '../instance';
 import axios from 'axios';
-import { Toaster } from "@/components/ui/sonner";
-import { toast } from "sonner";
-import { useNavigate, Link } from "react-router-dom"; // Import Link
-import { useDispatch } from "react-redux";
-import { setUserDetails } from "../feature/userSlice";
-import {userLogin} from '../User_apiservices/account'
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link
+import { useDispatch } from 'react-redux';
+import { setUserDetails } from '../feature/userSlice';
+import { userLogin } from '../User_apiservices/account';
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [user, setUser] = useState(null); 
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      setError("");
+      setError('');
       if (!email || !password) {
-        setError("Both fields are required");
+        setError('Both fields are required');
         return;
       }
-      const response = await userLogin(email,password,dispatch,navigate,toast)   
+      const response = await userLogin(
+        email,
+        password,
+        dispatch,
+        navigate,
+        toast
+      );
     } catch (err) {
-      console.log (err)
+      console.log(err);
     }
   };
 
   const login = useGoogleLogin({
     onSuccess: (credentialResponse) => {
-      console.log("Login Successful:", credentialResponse);
+      console.log('Login Successful:', credentialResponse);
       setUser(credentialResponse);
     },
     onError: (error) => {
-      console.log("Login Failed:", error);
+      console.log('Login Failed:', error);
     },
   });
 
@@ -56,11 +62,13 @@ function Login() {
           );
           console.log(response.data);
 
-          const res = await instance.post('user/google-login', { profile: response.data });
+          const res = await instance.post('user/google-login', {
+            profile: response.data,
+          });
           if (res.status === 200 || res.status === 201) {
             console.log(res);
             dispatch(setUserDetails(res.data.user));
-            navigate("/");
+            navigate('/');
           }
         } catch (err) {
           console.log(err);
@@ -130,11 +138,11 @@ function Login() {
           onClick={() => login()}
           className="w-full rounded-md bg-black border-2 border-black text-white px-4 py-2 text-sm font-medium hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2"
         >
-          Sign in with Google 
+          Sign in with Google
         </button>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
+          Don't have an account?{' '}
           <Link
             to="/signup"
             className="font-medium text-indigo-600 hover:text-indigo-500"

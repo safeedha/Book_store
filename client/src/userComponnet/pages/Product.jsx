@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
-import Navbar from "@/Reusable/Navbar";
-import { useSelector } from "react-redux";
-import instance from "../../instance";
-import Footer from "@/Reusable/Footer";
-import { useNavigate } from "react-router-dom";
-import { fetchCategory } from "../../User_apiservices/Product";
-import { shopcontext } from "../../context/Shopcontex";
-import UserPagination from "@/Reusable/UserPagination";
+import React, { useState, useEffect, useContext } from 'react';
+import Navbar from '@/Reusable/Navbar';
+import { useSelector } from 'react-redux';
+import instance from '../../instance';
+import Footer from '@/Reusable/Footer';
+import { useNavigate } from 'react-router-dom';
+import { fetchCategory } from '../../User_apiservices/Product';
+import { shopcontext } from '../../context/Shopcontex';
+import UserPagination from '@/Reusable/UserPagination';
 
 function Product() {
   const { search } = useContext(shopcontext);
@@ -18,14 +18,14 @@ function Product() {
   const [categoryList, setCategoryList] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9; 
+  const itemsPerPage = 9;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await instance.get("user/product", {
+        const response = await instance.get('user/product', {
           params: {
             priceSort: price,
             alphabetSort: char,
@@ -37,7 +37,7 @@ function Product() {
           setProduct(response.data.product);
         }
       } catch (error) {
-        console.error("Error fetching new products:", error);
+        console.error('Error fetching new products:', error);
       }
     };
     fetchProduct();
@@ -95,17 +95,24 @@ function Product() {
       <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
       <p
         className={`text-red-600 text-sm ${
-          new Date(product.offerId?.expiryDate) > new Date() ? "line-through" : ""
+          new Date(product.offerId?.expiryDate) > new Date()
+            ? 'line-through'
+            : ''
         }`}
       >
         &#8377;{product.price}
       </p>
 
-      {product.offerId && new Date(product.offerId?.expiryDate) > new Date() && (
-        <p className="text-sm text-green-500 font-semibold">
-          &#8377;{Math.ceil(product.price - (product.price * product.offerId.offerAmount) / 100)}
-        </p>
-      )}
+      {product.offerId &&
+        new Date(product.offerId?.expiryDate) > new Date() && (
+          <p className="text-sm text-green-500 font-semibold">
+            &#8377;
+            {Math.ceil(
+              product.price -
+                (product.price * product.offerId.offerAmount) / 100
+            )}
+          </p>
+        )}
 
       {product.offerId && new Date(product.offerId.expiryDate) > new Date() && (
         <p className="text-sm text-green-500">
@@ -181,7 +188,6 @@ function Product() {
               {item}
             </div>
 
-        
             <UserPagination
               currentPage={currentPage}
               totalPages={totalPages}

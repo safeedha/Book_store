@@ -4,17 +4,17 @@ import 'jspdf-autotable';
 
 const Test = () => {
   const csvData = [
-    ["Name", "Age", "Country"],
-    ["Alice", 25, "USA"],
-    ["Bob", 30, "UK"],
-    ["Charlie", 35, "Canada"]
+    ['Name', 'Age', 'Country'],
+    ['Alice', 25, 'USA'],
+    ['Bob', 30, 'UK'],
+    ['Charlie', 35, 'Canada'],
   ];
 
   // Dummy values for additional text
-  const heading = "Sales Report";
-  const orderamount = "$1500";
+  const heading = 'Sales Report';
+  const orderamount = '$1500';
   const saleCount = 50;
-  const allDiscount = "$200";
+  const allDiscount = '$200';
 
   // Function to export data as PDF with heading in the first column
   const exportToPDF = () => {
@@ -23,8 +23,8 @@ const Test = () => {
 
     // Add heading to the first column
     const modifiedData = [
-      [heading, "", ""], // Heading row with empty columns for alignment
-      ...csvData // Add the existing table data below the heading row
+      [heading, '', ''], // Heading row with empty columns for alignment
+      ...csvData, // Add the existing table data below the heading row
     ];
 
     const headers = modifiedData[0]; // First row as headers

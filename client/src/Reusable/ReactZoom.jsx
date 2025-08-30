@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import ReactImageZoom from 'react-image-zoom';
 
 function ReactZoom() {
@@ -6,7 +6,7 @@ function ReactZoom() {
     <div>
       <ReactImageZoom {...props} />
     </div>
-  )
+  );
 }
 
-export default ReactZoom
+export default ReactZoom;

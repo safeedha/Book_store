@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { getTopProduct, getTopCategory } from './AdminApi/Trending';
-import './Trending.css'
+import './Trending.css';
 
 function Trending() {
   const [product, setProduct] = useState([]);
@@ -64,16 +64,22 @@ function Trending() {
       <div className="flex h-screen overflow-hidden bg-gray-100">
         <Sidebar />
         <div className="flex-1 ml-64 p-6 overflow-hidden space-y-6">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Trending Analytics</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">
+            Trending Analytics
+          </h1>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white p-6 rounded-lg shadow-md overflow-y-auto max-h-[calc(100vh-180px)] custom-scrollbar">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Top 10 Products</h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Top 10 Products
+              </h2>
               <div className="space-y-4">{productData}</div>
             </div>
 
             <div className="bg-white p-6 rounded-lg shadow-md overflow-y-auto max-h-[calc(100vh-180px)] custom-scrollbar">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-4">Top 10 Categories</h2>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                Top 10 Categories
+              </h2>
               <div className="space-y-4">{categoryData}</div>
             </div>
           </div>

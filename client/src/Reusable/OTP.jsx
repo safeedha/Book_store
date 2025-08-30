@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import instance from '../instance';
-import { Toaster } from "@/components/ui/sonner";
-import { toast } from "sonner";
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 function VerifyOTP({ email, onSendData }) {
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(180); // 3 minutes countdown
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
@@ -26,16 +26,19 @@ function VerifyOTP({ email, onSendData }) {
   const verification = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.post('user/otpverification', { otp, email });
+      const response = await instance.post('user/otpverification', {
+        otp,
+        email,
+      });
       if (response.status === 200) {
-        toast.success("OTP verification successful, now you can login");
+        toast.success('OTP verification successful, now you can login');
         onSendData(true);
       }
     } catch (error) {
-      if (error.response?.data.message === "Invalid OTP. Please try again.") {
-        toast.error("Incorrect OTP");
+      if (error.response?.data.message === 'Invalid OTP. Please try again.') {
+        toast.error('Incorrect OTP');
       } else {
-        toast.error("OTP validity expired, please resend it");
+        toast.error('OTP validity expired, please resend it');
       }
     }
   };
@@ -44,26 +47,33 @@ function VerifyOTP({ email, onSendData }) {
     try {
       const response = await instance.post('user/resend', { email });
       if (response.status === 200) {
-        toast.success("OTP resent, please verify");
+        toast.success('OTP resent, please verify');
         setTimer(180); // Reset timer to 3 minutes
         setIsResendDisabled(true);
       }
     } catch (error) {
-      toast.error("Failed to resend OTP. Please try again later");
+      toast.error('Failed to resend OTP. Please try again later');
     }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Account Verification</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-800">
+          Account Verification
+        </h2>
         <Toaster position="top-center" richColors />
         <p className="mt-2 text-center text-sm text-gray-500">
           Please enter the OTP sent to your registered email.
         </p>
         <form className="mt-6 space-y-4" onSubmit={verification}>
           <div>
-            <label htmlFor="otp" className="block text-sm font-medium text-gray-700">Enter OTP</label>
+            <label
+              htmlFor="otp"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Enter OTP
+            </label>
             <input
               type="text"
               name="otp"
@@ -96,7 +106,9 @@ function VerifyOTP({ email, onSendData }) {
             </button>
           </p>
           <p className="mt-1 text-xs text-gray-400">
-            {isResendDisabled ? `You can resend OTP in ${Math.floor(timer / 60)}:${timer % 60 < 10 ? '0' : ''}${timer % 60} minutes` : "You can now resend OTP."}
+            {isResendDisabled
+              ? `You can resend OTP in ${Math.floor(timer / 60)}:${timer % 60 < 10 ? '0' : ''}${timer % 60} minutes`
+              : 'You can now resend OTP.'}
           </p>
         </div>
       </div>

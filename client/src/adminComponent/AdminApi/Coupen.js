@@ -1,4 +1,4 @@
-import adminInstance from "./AdminInstance"
+import adminInstance from './AdminInstance';
 
 export const coupencreation = async (
   copencode,
@@ -12,52 +12,48 @@ export const coupencreation = async (
   setCoupadd
 ) => {
   try {
-    console.log(copencode, copentype, minimumPurchase, discount, limit, selectedDate);
-    const response = await adminInstance.post("/coupen", {
+    console.log(
+      copencode,
+      copentype,
+      minimumPurchase,
+      discount,
+      limit,
+      selectedDate
+    );
+    const response = await adminInstance.post('/coupen', {
       copencode,
       copentype,
       minimumPurchase,
       discount,
       limit,
       selectedDate,
-      
-    });   
+    });
     console.log(response);
-        if (response.status === 201)
-         {
-          setIsOpen(false);
-          toast.success("Coupon created successfully");
-          setCoupadd(true)
-        }
-
+    if (response.status === 201) {
+      setIsOpen(false);
+      toast.success('Coupon created successfully');
+      setCoupadd(true);
+    }
   } catch (error) {
-   if(error.response.status===409)
-   {
-    toast.error("duplicte code")
-   }
-   
+    if (error.response.status === 409) {
+      toast.error('duplicte code');
+    }
   }
 };
 
-
-export const getAllcopen=async(setCoupen)=>{
-   try{
-     const response = await adminInstance.get("/coupen")
-     console.log(response.data.coupen)
-     setCoupen(response.data.coupen)
-   }
-   catch(error)
-   {
-     console.log(error)
-   }
-}
-
-export const coupenDelet=async(id,setCoupen)=>{
-  try{
-    const response=await adminInstance.patch(`/coupen/${id}`)
-    setCoupen(response.data.coupen)
+export const getAllcopen = async (setCoupen) => {
+  try {
+    const response = await adminInstance.get('/coupen');
+    console.log(response.data.coupen);
+    setCoupen(response.data.coupen);
+  } catch (error) {
+    console.log(error);
   }
-  catch(error){
+};
 
-  }
-}
+export const coupenDelet = async (id, setCoupen) => {
+  try {
+    const response = await adminInstance.patch(`/coupen/${id}`);
+    setCoupen(response.data.coupen);
+  } catch (error) {}
+};

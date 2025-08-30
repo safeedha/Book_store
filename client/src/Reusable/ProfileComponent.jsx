@@ -1,6 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaUser, FaShoppingBag, FaLock, FaMapMarkerAlt, FaShoppingCart, FaWallet, FaHeart } from 'react-icons/fa'; // Import icons
+import {
+  FaUser,
+  FaShoppingBag,
+  FaLock,
+  FaMapMarkerAlt,
+  FaShoppingCart,
+  FaWallet,
+  FaHeart,
+} from 'react-icons/fa'; // Import icons
 
 function ProfileComponent() {
   const navigate = useNavigate();

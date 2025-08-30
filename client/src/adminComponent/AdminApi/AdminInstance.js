@@ -1,13 +1,12 @@
-import axios from "axios";
+import axios from 'axios';
 
 const adminInstance = axios.create({
-  baseURL: import.meta.env.VITE_ADMIN, 
+  baseURL: import.meta.env.VITE_ADMIN,
   withCredentials: true,
 });
 
 adminInstance.interceptors.request.use(
   (config) => {
-   
     return config;
   },
   (error) => {
@@ -17,7 +16,6 @@ adminInstance.interceptors.request.use(
 
 adminInstance.interceptors.response.use(
   (response) => {
- 
     return response;
   },
   (error) => {

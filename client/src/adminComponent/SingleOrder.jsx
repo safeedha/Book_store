@@ -25,10 +25,9 @@ function SingleOrder() {
     fetchSingleOrderDetail();
   }, [itemId, prodId]);
 
-    useEffect(()=>{
-     console.log(orderDetail)
-    },[orderDetail])
-
+  useEffect(() => {
+    console.log(orderDetail);
+  }, [orderDetail]);
 
   if (loading) {
     return <div className="text-center text-lg">Loading order details...</div>;
@@ -42,72 +41,89 @@ function SingleOrder() {
     <div className="flex">
       <Sidebar />
       <div className="flex-1 ml-52 bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto my-6">
-  <div className="mb-2 text-gray-500 text-sm">
-    {orderDetail?.date || 'Date not available'}
-  </div>
+        <div className="mb-2 text-gray-500 text-sm">
+          {orderDetail?.date || 'Date not available'}
+        </div>
 
-  <div className="flex flex-wrap justify-between items-start mb-6">
-    <div className="flex items-center space-x-4">
-      <img
-        src={orderDetail?.image || 'https://via.placeholder.com/150'}
-        alt={orderDetail?.productname || 'Product'}
-        className="w-28 h-28 object-cover rounded-lg shadow-md border border-gray-300"
-      />
-      <div>
-        <p className="text-xl font-semibold text-gray-800">
-          {orderDetail?.productname || 'Product Name'}
-        </p>
-        <p className="text-gray-600 text-sm mt-1">
-          Quantity: {orderDetail?.quantity || 0}
-        </p>
-        <p className="text-sm font-semibold mt-1">
-          Price for single unit: <span className="text-red-500">${orderDetail?.TotalPrice || 0}</span>
-        </p>
+        <div className="flex flex-wrap justify-between items-start mb-6">
+          <div className="flex items-center space-x-4">
+            <img
+              src={orderDetail?.image || 'https://via.placeholder.com/150'}
+              alt={orderDetail?.productname || 'Product'}
+              className="w-28 h-28 object-cover rounded-lg shadow-md border border-gray-300"
+            />
+            <div>
+              <p className="text-xl font-semibold text-gray-800">
+                {orderDetail?.productname || 'Product Name'}
+              </p>
+              <p className="text-gray-600 text-sm mt-1">
+                Quantity: {orderDetail?.quantity || 0}
+              </p>
+              <p className="text-sm font-semibold mt-1">
+                Price for single unit:{' '}
+                <span className="text-red-500">
+                  ${orderDetail?.TotalPrice || 0}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div className="ml-8 flex-1">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Shipping Information
+            </h3>
+            <p className="text-gray-800 text-sm">
+              {orderDetail?.shippingname || 'N/A'}
+            </p>
+            <p className="text-gray-800 text-sm">
+              {orderDetail?.shippingnumber || 'N/A'}
+            </p>
+            <p className="text-gray-800 text-sm">
+              {orderDetail?.shippingstreetAddress || 'N/A'}
+            </p>
+            <p className="text-gray-800 text-sm">
+              {orderDetail?.shippingcity || 'City'},{' '}
+              {orderDetail?.shippingdistrict || 'District'},{' '}
+              {orderDetail?.shippingstate || 'State'} -{' '}
+              {orderDetail?.shippingpincode || 'Pincode'}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap justify-between items-center mb-4">
+          <div className="flex flex-col text-gray-800 text-sm">
+            <p>
+              <strong>Payment Method:</strong>{' '}
+              {orderDetail?.PaymentMethod || 'N/A'}
+            </p>
+            <p
+              className={`text-sm font-semibold ${
+                orderDetail?.paymentStatus === 'unpaid'
+                  ? 'text-red-500'
+                  : 'text-green-500'
+              }`}
+            >
+              <strong>Payment Status:</strong>{' '}
+              {orderDetail?.paymentStatus || 'N/A'}
+            </p>
+          </div>
+
+          <div className="flex flex-col text-gray-800 text-sm">
+            <p>
+              <strong>Status:</strong>
+              <span
+                className={`px-2 py-0.5 rounded-full text-white ${
+                  orderDetail?.OrderStatus === 'Pending'
+                    ? 'bg-yellow-500'
+                    : 'bg-green-500'
+                }`}
+              >
+                {orderDetail?.OrderStatus || 'N/A'}
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-
-    <div className="ml-8 flex-1">
-      <h3 className="text-lg font-semibold text-gray-800 mb-2">
-        Shipping Information
-      </h3>
-      <p className="text-gray-800 text-sm">{orderDetail?.shippingname || 'N/A'}</p>
-      <p className="text-gray-800 text-sm">{orderDetail?.shippingnumber || 'N/A'}</p>
-      <p className="text-gray-800 text-sm">{orderDetail?.shippingstreetAddress || 'N/A'}</p>
-      <p className="text-gray-800 text-sm">
-        {orderDetail?.shippingcity || 'City'}, {orderDetail?.shippingdistrict || 'District'},{' '}
-        {orderDetail?.shippingstate || 'State'} - {orderDetail?.shippingpincode || 'Pincode'}
-      </p>
-    </div>
-  </div>
-
-  <div className="flex flex-wrap justify-between items-center mb-4">
-    <div className="flex flex-col text-gray-800 text-sm">
-      <p>
-        <strong>Payment Method:</strong> {orderDetail?.PaymentMethod || 'N/A'}
-      </p>
-      <p
-        className={`text-sm font-semibold ${
-          orderDetail?.paymentStatus === 'unpaid' ? 'text-red-500' : 'text-green-500'
-        }`}
-      >
-        <strong>Payment Status:</strong> {orderDetail?.paymentStatus || 'N/A'}
-      </p>
-    </div>
-
-    <div className="flex flex-col text-gray-800 text-sm">
-      <p>
-        <strong>Status:</strong>
-        <span
-          className={`px-2 py-0.5 rounded-full text-white ${
-            orderDetail?.OrderStatus === 'Pending' ? 'bg-yellow-500' : 'bg-green-500'
-          }`}
-        >
-          {orderDetail?.OrderStatus || 'N/A'}
-        </span>
-      </p>
-    </div>
-  </div>
-</div>
 
       {/* <div className="flex-1 ml-52 bg-white rounded-lg shadow-md p-4 max-w-md mx-auto my-6">
   <div className="mb-3 text-gray-500 text-sm">
@@ -176,7 +192,6 @@ function SingleOrder() {
     </div>
   </div>
 </div> */}
-
 
       {/* <div className="flex-1 ml-52 bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto my-8">
         <div className="mb-4 text-gray-500 text-lg">

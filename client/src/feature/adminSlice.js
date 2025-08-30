@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const counterSlice = createSlice({
   name: 'admin',
@@ -9,15 +9,15 @@ const counterSlice = createSlice({
   },
   reducers: {
     setAdmindetails: (state, action) => {
-      state.adminInfo = action.payload; 
-      localStorage.setItem('admin-info', JSON.stringify(action.payload));  
+      state.adminInfo = action.payload;
+      localStorage.setItem('admin-info', JSON.stringify(action.payload));
     },
     logoutAdmin: (state) => {
-      state.adminInfo = null 
-      localStorage.removeItem("admin-info");
+      state.adminInfo = null;
+      localStorage.removeItem('admin-info');
     },
   },
 });
 
 export default counterSlice.reducer;
-export const { setAdmindetails ,logoutAdmin} = counterSlice.actions;
+export const { setAdmindetails, logoutAdmin } = counterSlice.actions;

@@ -1,39 +1,39 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import instance from '@/instance';
-import { Toaster } from "@/components/ui/sonner";
-import { toast } from "sonner";
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import OTP from '../Reusable/OTP'
-import {passwordReset} from '../User_apiservices/password'
+import OTP from '../Reusable/OTP';
+import { passwordReset } from '../User_apiservices/password';
 
 const PasswordReset = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [dataFromOTP, setDataFromOTP] = useState(false);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const handleData = (data) => {
     setDataFromOTP(data);
-    setPassword(false)
+    setPassword(false);
   };
 
-  useEffect(()=>{
-   console.log(dataFromOTP)
-  },[])
+  useEffect(() => {
+    console.log(dataFromOTP);
+  }, []);
   const Emailhandling = async (e) => {
     e.preventDefault();
     try {
-      const response = await instance.post("/user/forgetpassword", { email });
+      const response = await instance.post('/user/forgetpassword', { email });
       if (response.status === 200) {
-        toast.success("A otp is generated for your registerd mail")
+        toast.success('A otp is generated for your registerd mail');
         setPassword(true);
       }
     } catch (error) {
-      if (error.response?.data?.message === "This email is not registered") {
-        toast.error("This email is not registered");
+      if (error.response?.data?.message === 'This email is not registered') {
+        toast.error('This email is not registered');
       }
     }
   };
@@ -41,21 +41,19 @@ const PasswordReset = () => {
   const handlePasswordReset = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error('Passwords do not match');
       return;
     }
-     const hasLetter = /[a-zA-Z]/.test(newPassword); 
-        const hasNumber = /\d/.test(newPassword);
-        if (!(hasLetter && hasNumber)) {
-            toast.error("password should contain letter and number")
-            return
-        }
+    const hasLetter = /[a-zA-Z]/.test(newPassword);
+    const hasNumber = /\d/.test(newPassword);
+    if (!(hasLetter && hasNumber)) {
+      toast.error('password should contain letter and number');
+      return;
+    }
     try {
-        
-      await passwordReset(email,newPassword,navigate,toast)
-     
+      await passwordReset(email, newPassword, navigate, toast);
     } catch (error) {
-      toast.error("Failed to reset password");
+      toast.error('Failed to reset password');
     }
   };
 
@@ -67,7 +65,7 @@ const PasswordReset = () => {
       className="bg-gray-100 px-4 py-8 min-h-screen" // Ensuring the background applies to the full screen
     >
       <Toaster position="top-center" richColors />
-      {password === false && dataFromOTP=== false && (
+      {password === false && dataFromOTP === false && (
         <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
           <form onSubmit={Emailhandling}>
             <div className="mb-4">
@@ -91,9 +89,9 @@ const PasswordReset = () => {
         </div>
       )}
 
-      {password&&<OTP email={email} onSendData={handleData}/>}
+      {password && <OTP email={email} onSendData={handleData} />}
 
-      {dataFromOTP&& (
+      {dataFromOTP && (
         <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
           <div className="w-full max-w-sm bg-white rounded-lg shadow-lg p-6">
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">

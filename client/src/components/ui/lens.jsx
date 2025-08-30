@@ -1,6 +1,6 @@
-"use client";;
-import React, { useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+'use client';
+import React, { useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export const Lens = ({
   children,
@@ -29,14 +29,15 @@ export const Lens = ({
   };
 
   return (
-    (<div
+    <div
       ref={containerRef}
       className="relative overflow-hidden rounded-lg z-20"
       onMouseEnter={() => {
         setIsHovering(true);
       }}
       onMouseLeave={() => setIsHovering(false)}
-      onMouseMove={handleMouseMove}>
+      onMouseMove={handleMouseMove}
+    >
       {children}
       {isStatic ? (
         <div>
@@ -44,7 +45,7 @@ export const Lens = ({
             initial={{ opacity: 0, scale: 0.58 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className="absolute inset-0 overflow-hidden"
             style={{
               maskImage: `radial-gradient(circle ${lensSize / 2}px at ${
@@ -54,13 +55,15 @@ export const Lens = ({
                 position.x
               }px ${position.y}px, black 100%, transparent 100%)`,
               transformOrigin: `${position.x}px ${position.y}px`,
-            }}>
+            }}
+          >
             <div
               className="absolute inset-0"
               style={{
                 transform: `scale(${zoomFactor})`,
                 transformOrigin: `${position.x}px ${position.y}px`,
-              }}>
+              }}
+            >
               {children}
             </div>
           </motion.div>
@@ -73,7 +76,7 @@ export const Lens = ({
                 initial={{ opacity: 0, scale: 0.58 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="absolute inset-0 overflow-hidden"
                 style={{
                   maskImage: `radial-gradient(circle ${lensSize / 2}px at ${
@@ -86,13 +89,15 @@ export const Lens = ({
                   }px, black 100%, transparent 100%)`,
                   transformOrigin: `${mousePosition.x}px ${mousePosition.y}px`,
                   zIndex: 50,
-                }}>
+                }}
+              >
                 <div
                   className="absolute inset-0"
                   style={{
                     transform: `scale(${zoomFactor})`,
                     transformOrigin: `${mousePosition.x}px ${mousePosition.y}px`,
-                  }}>
+                  }}
+                >
                   {children}
                 </div>
               </motion.div>
@@ -100,6 +105,6 @@ export const Lens = ({
           )}
         </AnimatePresence>
       )}
-    </div>)
+    </div>
   );
 };
