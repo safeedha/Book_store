@@ -35,15 +35,15 @@ const adminLogin = async (req, res) => {
 
       res.cookie('admin_accessToken', accessToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: 'strict',
+        secure: true,
+        sameSite: 'None',
         maxAge: 15 * 60 * 1000,
       });
 
       res.cookie('admin_refreshToken', refreshToken, {
         httpOnly: true,
-        secure: false,
-        sameSite: 'strict',
+        secure: true,
+        sameSite: 'None',
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 

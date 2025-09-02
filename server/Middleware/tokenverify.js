@@ -45,10 +45,10 @@ const handleTokenRenewal = (req, res, next) => {
     );
 
     res.cookie('accessToken', newAccessToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+        maxAge: 15 * 60 * 1000,
     });
 
     next();
