@@ -47,10 +47,10 @@ const handleTokenRenewal = (req, res, next) => {
       { expiresIn: '15m' }
     );
     res.cookie('user_accessToken', newAccessToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'strict',
-      maxAge: 15 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+        maxAge: 15 * 60 * 1000,
     });
 
     req.user = decoded;
