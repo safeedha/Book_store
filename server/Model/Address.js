@@ -20,11 +20,12 @@ const schema = new Schema(
       type: String,
       required: true,
     },
-    district: { // Corrected typo in 'distric' to 'district'
+    district: {
+      // Corrected typo in 'distric' to 'district'
       type: String,
       required: true,
     },
-    city:{
+    city: {
       type: String,
       required: true,
     },
@@ -32,16 +33,16 @@ const schema = new Schema(
       type: String,
       required: true,
     },
-    user_id:{
-      type:Schema.Types.ObjectId,
-      ref:User,
-      required:true
+    user_id: {
+      type: Schema.Types.ObjectId,
+      ref: User,
+      required: true,
     },
-    status:{
-      type:String,
-      default:'unblock',
-      enum:['block','unblock']
-    }
+    status: {
+      type: String,
+      default: 'unblock',
+      enum: ['block', 'unblock'],
+    },
   },
   {
     timestamps: true, // Moved into the schema options object

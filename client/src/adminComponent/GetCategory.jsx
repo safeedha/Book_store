@@ -27,12 +27,13 @@ function GetCategory() {
   const navigate = useNavigate();
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [category, setCategory] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [name, setName] = useState('');
   const [expiryDate, setExpiryDate] = useState(null);
   const [discount, setDiscount] = useState(null);
   const [catid, SetcatId] = useState('');
   const [catname, setCatname] = useState('');
+  const [page,setPage]=useState(1)
+  const [totalpage,setTotalpage]=useState(0)
   const rowsPerPage = 3;
 
   function Addoffer(id) {
@@ -67,19 +68,14 @@ function GetCategory() {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        await getAllCategory(setCategory);
+        await getAllCategory(setCategory,page,rowsPerPage,setTotalpage);
       } catch (error) {
         toast.error('Error fetching category data');
       }
     };
     fetchCategory();
-  }, []);
+  }, [page]);
 
-  const totalPages = Math.ceil(category.length / rowsPerPage);
-  const paginatedData = category.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
 
   const Editblock = async (id) => {
     const current = category.find((doc) => doc._id === id);
@@ -122,7 +118,6 @@ function GetCategory() {
     ];
 
     setCategory(sorted);
-    setCurrentPage(1);
   };
 
   return (
@@ -165,7 +160,7 @@ function GetCategory() {
               </tr>
             </thead>
             <tbody>
-              {paginatedData.map((doc) => (
+              {category.map((doc) => (
                 <tr
                   key={doc._id}
                   className={`${doc.status !== 'unblock' ? 'bg-pink-200' : ''}`}
@@ -208,9 +203,9 @@ function GetCategory() {
             </tbody>
           </table>
           <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            currentPage={page}
+            totalPages={totalpage}
+            onPageChange={setPage}
           />
         </div>
 

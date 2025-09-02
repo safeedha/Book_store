@@ -31,12 +31,13 @@ function GetProduct() {
   const navigate = useNavigate();
   const [product, setProduct] = useState([]);
   const [productId, setProductID] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [name, setName] = useState('');
   const [expiryDate, setExpiryDate] = useState(null);
   const [discount, setDiscount] = useState(null);
   const [prodname, setProdname] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const rowsPerPage = 3;
 
   function afterOpenModal() {
@@ -53,23 +54,19 @@ function GetProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        await getAllproduct(setProduct, dispatch, logoutAdmin);
+        await getAllproduct(page,rowsPerPage,setTotalPages,setProduct, dispatch, logoutAdmin);
       } catch (error) {
         toast.error('There is an error in fetching products.');
       }
     };
     fetchProduct();
-  }, []);
+  }, [page]);
   function Addoffer(id) {
     setIsOpen(true);
     setProductID(id);
   }
 
-  const totalPages = Math.ceil(product.length / rowsPerPage);
-  const paginatedData = product.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
+ 
 
   const Editblock = async (id) => {
     const current = product.find((doc) => doc._id === id);
@@ -134,7 +131,7 @@ function GetProduct() {
     navigate(`/admin/product/${id}`);
   };
 
-  const item = paginatedData.map((doc) => (
+  const item = product.map((doc) => (
     <tr
       key={doc._id}
       className={`${doc.status !== 'unblock' ? 'bg-pink-200' : ''}`}
@@ -184,12 +181,10 @@ function GetProduct() {
     </tr>
   ));
   const Search = () => {
-    // Filter the products based on the search term
     const filtered = product.filter((doc) =>
       doc.name.toLowerCase().includes(prodname.toLowerCase())
     );
 
-    // Sort the filtered data to make the first row the matching product
     const sorted = [
       ...filtered,
       ...product.filter(
@@ -344,9 +339,9 @@ function GetProduct() {
           </Modal>
 
           <Pagination
-            currentPage={currentPage}
+            currentPage={page}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={setPage}
           />
         </div>
       </div>

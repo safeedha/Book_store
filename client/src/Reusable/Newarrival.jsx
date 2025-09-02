@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import instance from '../instance';
+import  { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchNewProduct } from '@/User_apiservices/Product';
 

@@ -3,7 +3,7 @@ const { Schema, model } = mongoose;
 
 const schema = new Schema({
   otp: {
-    type: String
+    type: String,
   },
   email: {
     type: String,
@@ -12,13 +12,11 @@ const schema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
 schema.index({ createdAt: 1 }, { expireAfterSeconds: 180 });
 
-
 const OtpModel = model('Otp', schema);
 
 module.exports = OtpModel;
-

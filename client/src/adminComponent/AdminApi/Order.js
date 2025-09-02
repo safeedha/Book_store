@@ -1,8 +1,8 @@
 import adminInstance from './AdminInstance';
 
-export const getOrder = async () => {
+export const getOrder = async (currentPage,rowsPerPage) => {
   try {
-    const response = await adminInstance('/order');
+    const response = await adminInstance('/order',{params:{currentPage,rowsPerPage}});
     return response;
   } catch (error) {
     console.log(error);

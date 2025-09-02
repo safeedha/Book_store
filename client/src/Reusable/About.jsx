@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Banner from '../assets/Banner.webp';
 
 const About = () => {

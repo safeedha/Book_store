@@ -4,28 +4,23 @@ const { Schema, model } = mongoose;
 const schema = new Schema(
   {
     user_id: {
-      type: Schema.Types.ObjectId, 
+      type: Schema.Types.ObjectId,
       ref: 'User',
     },
     product_id: {
-      type: Schema.Types.ObjectId, 
+      type: Schema.Types.ObjectId,
       ref: 'Product',
     },
     quantity: {
       type: Number,
-      default:1, 
+      default: 1,
     },
-
   },
   { timestamps: true }
 );
 
 const Cart = model('Cart', schema);
 module.exports = Cart;
-
-
-
-
 
 // const mongoose = require('mongoose');
 
@@ -78,7 +73,6 @@ module.exports = Cart;
 //   }
 // );
 
-
 // cartSchema.pre('save', function (next) {
 //   this.totalPrice = this.items.reduce((acc, item) => acc + item.total, 0);
 //   next();
@@ -87,4 +81,3 @@ module.exports = Cart;
 // const Cart = mongoose.model('Cart', cartSchema);
 
 // module.exports = Cart;
-

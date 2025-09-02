@@ -23,6 +23,11 @@ export default [
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
+     ignores: [
+      "node_modules",   // ignore node_modules
+      "dist",           // ignore build folder
+      "build",
+    ],
     rules: {
       ...js.configs.recommended.rules,
       ...react.configs.recommended.rules,

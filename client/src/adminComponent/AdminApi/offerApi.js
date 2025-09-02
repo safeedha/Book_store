@@ -1,9 +1,10 @@
 import adminInstance from './AdminInstance';
 
-export const getOffer = async (setOffer) => {
+export const getOffer = async (setOffer,page,itemsPerPage,setToatalPage) => {
   try {
-    const response = await adminInstance.get('/offer');
+    const response = await adminInstance.get('/offer',{params:{page,itemsPerPage}});
     setOffer(response.data.offer);
+    setToatalPage(response.data.totalPages)
   } catch (error) {
     console.log(error);
   }

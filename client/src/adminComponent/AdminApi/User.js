@@ -1,9 +1,26 @@
 import adminInstance from './AdminInstance';
 
-export const getUser = async (setUser, dispatch, Navigate) => {
+export const getUser = async (page,itemsPerPage,setTotalPages,setUser, dispatch, Navigate) => {
   try {
-    const response = await adminInstance.get('/customer');
+    const response = await adminInstance.get('/customer', {
+  params: { page, itemsPerPage }
+});
     setUser(response.data.customer);
+    setTotalPages(response.data.totalPages)
+  } catch (error) {
+    if (
+      error.response.data.message ===
+      'Refresh token not found. Please log in again.'
+    ) {
+      dispatch(logoutAdmin());
+    }
+  }
+};
+
+export const getPage=async(username,itemperpage) => {
+  try {
+    const response = await adminInstance.get(`/customer/page`, {params:{username,itemperpage}});
+    
   } catch (error) {
     if (
       error.response.data.message ===

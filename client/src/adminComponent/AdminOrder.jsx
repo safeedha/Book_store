@@ -8,17 +8,18 @@ import Swal from 'sweetalert2';
 function AdminOrder() {
   const [order, setOrder] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 2;
+  const [totalPages, setTotalPages] = useState(0);
+  const rowsPerPage = 3;
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrder = async () => {
-      const response = await getOrder();
-      console.log(response.data.order);
-      setOrder(response.data.order);
+      const response = await getOrder(currentPage,rowsPerPage);
+      setOrder(response.data.orders);
+      setTotalPages(response.data.totalPages)
     };
     fetchOrder();
-  }, []);
+  }, [currentPage]);
 
   const handleStatusChange = async (orderId, prodId, newStatus) => {
     console.log(orderId, prodId, newStatus);
@@ -46,17 +47,13 @@ function AdminOrder() {
     navigate(`/admin/order-details/${itemId}/${prodId}`);
   };
 
-  const totalPages = Math.ceil(order.length / rowsPerPage);
-  const paginatedData = order.slice(
-    (currentPage - 1) * rowsPerPage,
-    currentPage * rowsPerPage
-  );
+
 
   const returnProduct = () => {
     navigate('/admin/return');
   };
 
-  const order_item = paginatedData.map((item, index) =>
+  const order_item = order.map((item, index) =>
     item.order_item.map((prod, index2) => {
       const currentStatus = prod.order_status;
       const paymentstatus = prod.payment_status;
@@ -205,7 +202,7 @@ function AdminOrder() {
           <Pagination
             currentPage={currentPage}
             totalPages={totalPages}
-            onPageChange={(page) => setCurrentPage(page)}
+            onPageChange={setCurrentPage}
           />
         </div>
       </div>

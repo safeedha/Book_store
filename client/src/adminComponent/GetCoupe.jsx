@@ -29,9 +29,12 @@ function GetCoupe() {
   const [expiryDate, setExpiryDate] = useState('');
   const [coupen, setCoupen] = useState([]);
   const [coupadd, setCoupadd] = useState(false);
+  const [page,setPage]=useState(1)
+  const [totalpage,setTotalpage]=useState(0)
+  const rowsPerPage = 4;
   useEffect(() => {
     const getCoupen = async () => {
-      await getAllcopen(setCoupen);
+      await getAllcopen(page,rowsPerPage,setTotalpage,setCoupen);
       setCoupadd(false);
     };
     getCoupen();

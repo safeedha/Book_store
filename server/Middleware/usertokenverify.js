@@ -6,19 +6,17 @@ const jwt = require('jsonwebtoken');
 const verifyUsertoken = (req, res, next) => {
   const accessToken = req.cookies.user_accessToken;
 
-
   if (!accessToken) {
     return handleTokenRenewal(req, res, next);
   }
 
   jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) {
-     
       return handleTokenRenewal(req, res, next);
     }
-   
+
     req.user = decoded;
-   
+
     if (decoded.role !== 'user') {
       return res.status(403).json({ message: 'Access denied. user only.' });
     }
@@ -29,19 +27,22 @@ const verifyUsertoken = (req, res, next) => {
 const handleTokenRenewal = (req, res, next) => {
   const refreshToken = req.cookies?.user_refreshToken;
 
-
   if (!refreshToken) {
-    return res.status(401).json({ message: 'Refresh token not found. Please log in again.' });
+    return res
+      .status(401)
+      .json({ message: 'Refresh token not found. Please log in again.' });
   }
 
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err) {
       console.error('Refresh token verification failed:', err.message);
-      return res.status(403).json({ message: 'Invalid refresh token. Please log in again.' });
+      return res
+        .status(403)
+        .json({ message: 'Invalid refresh token. Please log in again.' });
     }
 
     const newAccessToken = jwt.sign(
-      { id: decoded.id, email: decoded.email ,role:decoded.role},
+      { id: decoded.id, email: decoded.email, role: decoded.role },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '15m' }
     );
@@ -51,15 +52,14 @@ const handleTokenRenewal = (req, res, next) => {
       sameSite: 'strict',
       maxAge: 15 * 60 * 1000,
     });
-    
-    req.user = decoded; 
+
+    req.user = decoded;
     if (decoded.role !== 'user') {
       return res.status(403).json({ message: 'Access denied. user only.' });
     }
-    
-    next(); 
+
+    next();
   });
 };
-
 
 module.exports = { verifyUsertoken };

@@ -7,7 +7,7 @@ const schema = new Schema({
     required: true,
   },
   image: {
-    type: String, 
+    type: String,
     required: true,
   },
   status: {
@@ -15,15 +15,15 @@ const schema = new Schema({
     enum: ['unblock', 'block'],
     default: 'unblock',
   },
-  sellingcount:{
-    type:Number,
-    default:0
-   },
-   offerId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Offer',
-      default:null
-    },
+  sellingcount: {
+    type: Number,
+    default: 0,
+  },
+  offerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Offer',
+    default: null,
+  },
 });
 
 const CategoryModel = model('Category', schema);

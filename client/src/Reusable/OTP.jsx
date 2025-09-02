@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import instance from '../instance';
 import { Toaster } from '@/components/ui/sonner';
@@ -9,7 +9,6 @@ function VerifyOTP({ email, onSendData }) {
   const [timer, setTimer] = useState(180); // 3 minutes countdown
   const [isResendDisabled, setIsResendDisabled] = useState(true);
 
-  const navigate = useNavigate();
 
   useEffect(() => {
     let interval;
@@ -52,6 +51,7 @@ function VerifyOTP({ email, onSendData }) {
         setIsResendDisabled(true);
       }
     } catch (error) {
+      console.log(error)
       toast.error('Failed to resend OTP. Please try again later');
     }
   };

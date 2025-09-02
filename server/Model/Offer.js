@@ -27,13 +27,10 @@
 //   { timestamps: true }
 // );
 
-
-
 // const Offer = model("Offer", offerSchema);
 // module.exports = Offer;
 
-
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 const offerSchema = new Schema(
@@ -44,13 +41,13 @@ const offerSchema = new Schema(
     },
     offerType: {
       type: String,
-      enum: ["Product", "Category"],
+      enum: ['Product', 'Category'],
       required: true,
     },
     offerType_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      refPath: "offerType", 
+      refPath: 'offerType',
     },
     offerAmount: {
       type: Number,
@@ -64,5 +61,5 @@ const offerSchema = new Schema(
   { timestamps: true }
 );
 
-const Offer = model("Offer", offerSchema);
+const Offer = model('Offer', offerSchema);
 module.exports = Offer;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { getUser, userStatusUpdate } from './AdminApi/User';
+import { getUser, userStatusUpdate,getPage } from './AdminApi/User';
 import Swal from 'sweetalert2';
 import Pagination from '../Reusable/Pagination';
 import { useDispatch } from 'react-redux';
@@ -12,19 +12,23 @@ function Getcustomer() {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const [user, setUser] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+
   const [itemsPerPage] = useState(5);
   const [username, setUsername] = useState('');
+
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
   useEffect(() => {
     const fetchCustomer = async () => {
       try {
-        await getUser(setUser, dispatch, logoutAdmin);
+        await getUser(page,itemsPerPage,setTotalPages,setUser, dispatch, logoutAdmin);
       } catch (error) {
         console.log(error);
       }
     };
     fetchCustomer();
-  }, []);
+  }, [page]);
 
   const Edithandle = (id) => {
     Navigate(`/admin/customer/${id}`, { state: { id } });
@@ -60,28 +64,11 @@ function Getcustomer() {
     }
   };
 
-  // Calculate the paginated data
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentUsers = user.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Total pages
-  const totalPages = Math.ceil(user.length / itemsPerPage);
-  const Search = () => {
-    const filtered = user.filter((doc) =>
-      doc.name.toLowerCase().includes(username.toLowerCase())
-    );
 
-    // Sort the filtered data to make the first row the matching product
-    const sorted = [
-      ...filtered,
-      ...user.filter(
-        (doc) => !doc.name.toLowerCase().includes(username.toLowerCase())
-      ),
-    ];
 
-    setUser(sorted);
-    setCurrentPage(1);
+  const Search = async() => {
+       const result=await getPage(username)  
   };
   return (
     <div className="flex">
@@ -126,7 +113,7 @@ function Getcustomer() {
               </tr>
             </thead>
             <tbody>
-              {currentUsers.map((doc) => (
+              {user.map((doc) => (
                 <tr key={doc._id}>
                   <td className="border border-gray-300 px-4 py-2">
                     {doc.name}
@@ -153,9 +140,9 @@ function Getcustomer() {
             </tbody>
           </table>
           <Pagination
-            currentPage={currentPage}
+            currentPage={page}
             totalPages={totalPages}
-            onPageChange={setCurrentPage}
+            onPageChange={setPage}
           />
         </div>
       </div>

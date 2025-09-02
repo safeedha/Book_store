@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, } from 'react';
 import { Link } from 'react-router-dom';
 import LOGO from '../assets/logo.webp';
 import { useDispatch } from 'react-redux';
@@ -9,7 +9,7 @@ import { cartQuantityUpdate } from '../feature/cartSlice';
 import { useContext } from 'react';
 import { shopcontext } from '../context/Shopcontex';
 import { useNavigate } from 'react-router-dom';
-import _ from 'lodash';
+
 
 const Navbar = ({ user }) => {
   const { search, setSearch } = useContext(shopcontext);
@@ -23,7 +23,7 @@ const Navbar = ({ user }) => {
     const fetchUserStatus = async () => {
       if (user) {
         try {
-          const response = await instance.get('/user/status');
+           await instance.get('/user/status');
         } catch (error) {
           if (
             error.response.data.message ===
@@ -40,13 +40,13 @@ const Navbar = ({ user }) => {
       }
     };
     fetchUserStatus();
-  }, [user]);
+  }, [user,dispatch]);
 
   useEffect(() => {
     if (user) {
       getQuantitCart();
     }
-  }, [cartquantity]);
+  }, [cartquantity,user]);
 
   const getQuantitCart = async () => {
     try {

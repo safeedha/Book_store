@@ -17,8 +17,10 @@ function Product() {
   const [product, setProduct] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 9;
+ 
+const itemsPerPage = 9;
+const [page, setPage] = useState(1);
+const [totalPages, setTotalPages] = useState(0);
 
   const navigate = useNavigate();
 
@@ -27,6 +29,8 @@ function Product() {
       try {
         const response = await instance.get('user/product', {
           params: {
+            page,
+            itemsPerPage ,
             priceSort: price,
             alphabetSort: char,
             categoryList: categoryList,
@@ -35,13 +39,14 @@ function Product() {
         });
         if (response.status === 200) {
           setProduct(response.data.product);
+          setTotalPages(response.data.totalPages)
         }
       } catch (error) {
         console.error('Error fetching new products:', error);
       }
     };
     fetchProduct();
-  }, [price, char, categoryList, search]);
+  }, [price, char, categoryList, search,page]);
 
   useEffect(() => {
     const fetchCategoryList = async () => {
@@ -77,11 +82,11 @@ function Product() {
     navigate(`/product/${id}`);
   };
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentProducts = product.slice(startIndex, startIndex + itemsPerPage);
-  const totalPages = Math.ceil(product.length / itemsPerPage);
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const currentProducts = product.slice(startIndex, startIndex + itemsPerPage);
+  // const totalPages = Math.ceil(product.length / itemsPerPage);
 
-  const item = currentProducts.map((product, index) => (
+  const item = product.map((product, index) => (
     <div
       key={index}
       className="bg-white shadow-md rounded-lg p-4 text-center"
@@ -188,11 +193,11 @@ function Product() {
               {item}
             </div>
 
-            <UserPagination
-              currentPage={currentPage}
+             <UserPagination
+              currentPage={page}
               totalPages={totalPages}
-              onPageChange={(page) => setCurrentPage(page)}
-            />
+              onPageChange={(page) => setPage(page)}
+            /> 
           </div>
         </div>
       </div>

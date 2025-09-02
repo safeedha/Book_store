@@ -8,16 +8,16 @@ import Pagination from '@/Reusable/Pagination';
 
 function Offer() {
   const [offer, setOffer] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3; // Number of items per page
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 3; 
+  const [totalPage,setToatalPage]=useState(0)
 
-  // Fetch offers when the component mounts
   useEffect(() => {
     const allAvailableOffer = async () => {
-      await getOffer(setOffer); // Fetch all offers
+      await getOffer(setOffer,page,itemsPerPage,setToatalPage); // Fetch all offers
     };
     allAvailableOffer();
-  }, []);
+  }, [page]);
 
   // Delete offer function
   const handleDelete = async (id) => {
@@ -40,13 +40,9 @@ function Offer() {
     }
   };
 
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = offer.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Mapping the current offers to render in the table
-  const offerItem = currentItems.map((doc, index) => (
+
+  const offerItem = offer.map((doc, index) => (
     <tr key={index}>
       <td className="border border-gray-500 px-4 py-2">{doc.offerName}</td>
       <td className="border border-gray-500 px-4 py-2">{doc.offerType}</td>
@@ -98,11 +94,11 @@ function Offer() {
             <tbody>{offerItem}</tbody>
           </table>
 
-          {/* Pagination Controls */}
+
           <Pagination
-            currentPage={currentPage}
-            totalPages={Math.ceil(offer.length / itemsPerPage)} // Calculate total pages
-            onPageChange={setCurrentPage} // Function to handle page change
+            currentPage={page}
+            totalPages={totalPage} 
+            onPageChange={setPage} 
           />
         </div>
       </div>

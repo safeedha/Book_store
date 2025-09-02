@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Route } from 'react-router-dom';
 import Dashbord from './adminComponent/Dashbord';
 import Getcustomer from './adminComponent/Getcustomer';

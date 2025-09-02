@@ -1,9 +1,10 @@
 import adminInstance from './AdminInstance';
 
-export const getAllproduct = async (setProduct, dispatch, logoutAdmin) => {
+export const getAllproduct = async (page,rowsPerPage,setTotalPages,setProduct, dispatch, logoutAdmin) => {
   try {
-    const response = await adminInstance.get('/product');
+    const response = await adminInstance.get('/product',{params:{page,rowsPerPage}});
     setProduct(response.data.product);
+    setTotalPages(response.data.totalPages)
   } catch (error) {
     if (
       error.response.data.message ===

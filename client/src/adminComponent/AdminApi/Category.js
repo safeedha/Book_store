@@ -1,9 +1,10 @@
 import adminInstance from './AdminInstance';
 
-export const getAllCategory = async (setCategory) => {
+export const getAllCategory = async (setCategory,page,rowsPerPage,setTotalpage) => {
   try {
-    const response = await adminInstance.get('/category');
-    setCategory(response.data.category);
+    const response = await adminInstance.get('/category',{params:{page,rowsPerPage}});
+    setCategory(response.data.categories);
+    setTotalpage(response.data.totalPages)
   } catch (error) {
     console.log(error);
   }

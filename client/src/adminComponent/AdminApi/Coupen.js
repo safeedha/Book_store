@@ -41,11 +41,11 @@ export const coupencreation = async (
   }
 };
 
-export const getAllcopen = async (setCoupen) => {
+export const getAllcopen = async (page,rowsPerPage,setTotalpage,setCoupen) => {
   try {
-    const response = await adminInstance.get('/coupen');
-    console.log(response.data.coupen);
+    const response = await adminInstance.get('/coupen',{params:{page,rowsPerPage}});
     setCoupen(response.data.coupen);
+    setTotalpage(response.data.totalPages)
   } catch (error) {
     console.log(error);
   }
