@@ -1,7 +1,7 @@
 const Product = require('../Model/Product');
 const Category = require('../Model/Category');
 const User = require('../Model/User');
-const Offer = require('../Model/Offer');
+
 
 const newArrival = async (req, res, next) => {
   try {

@@ -1,9 +1,9 @@
 import ProfileComponent from '@/Reusable/ProfileComponent';
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
-import instance from '@/instance';
+
 import { useSelector } from 'react-redux';
 import Navbar from '@/Reusable/Navbar';
 import { changePassword } from '@/User_apiservices/password';

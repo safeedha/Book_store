@@ -29,8 +29,9 @@ function GetCoupe() {
   const [expiryDate, setExpiryDate] = useState('');
   const [coupen, setCoupen] = useState([]);
   const [coupadd, setCoupadd] = useState(false);
+  const[totalpage,setTotalpage]=useState(1)
   const [page,setPage]=useState(1)
-  const [totalpage,setTotalpage]=useState(0)
+
   const rowsPerPage = 4;
   useEffect(() => {
     const getCoupen = async () => {
@@ -38,7 +39,7 @@ function GetCoupe() {
       setCoupadd(false);
     };
     getCoupen();
-  }, [coupadd]);
+  }, [coupadd,page]);
 
   function openModal() {
     setIsOpen(true);
@@ -343,7 +344,7 @@ function GetCoupe() {
           </table>
           <Pagination
             currentPage={currentPage}
-            totalPages={Math.ceil(coupen.length / itemsPerPage)}
+            totalPages={totalpage}
             onPageChange={setCurrentPage}
           />
         </div>

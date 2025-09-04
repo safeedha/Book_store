@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import Navbar from '@/Reusable/Navbar';
 import { useSelector } from 'react-redux';
 import ProfileComponent from '@/Reusable/ProfileComponent';
@@ -26,7 +26,7 @@ function WishList() {
       }
     };
     fetchWishList();
-  }, []);
+  }, [dispatch]);
 
   const deleteHandle = async (id) => {
     await delteFromwishlist(id, setWish);

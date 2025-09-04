@@ -1,4 +1,6 @@
-import React from 'react';
+import PropTypes from "prop-types";
+
+
 
 const UserPagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
@@ -24,4 +26,10 @@ const UserPagination = ({ currentPage, totalPages, onPageChange }) => {
   );
 };
 
+
+UserPagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+};
 export default UserPagination;

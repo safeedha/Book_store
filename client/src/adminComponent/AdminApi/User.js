@@ -1,6 +1,6 @@
 import adminInstance from './AdminInstance';
 
-export const getUser = async (page,itemsPerPage,setTotalPages,setUser, dispatch, Navigate) => {
+export const getUser = async (page,itemsPerPage,setTotalPages,setUser, dispatch,logoutAdmin) => {
   try {
     const response = await adminInstance.get('/customer', {
   params: { page, itemsPerPage }
@@ -17,9 +17,9 @@ export const getUser = async (page,itemsPerPage,setTotalPages,setUser, dispatch,
   }
 };
 
-export const getPage=async(username,itemperpage) => {
+export const getPage=async(username,itemperpage,dispatch,logoutAdmin) => {
   try {
-    const response = await adminInstance.get(`/customer/page`, {params:{username,itemperpage}});
+     await adminInstance.get(`/customer/page`, {params:{username,itemperpage}});
     
   } catch (error) {
     if (
@@ -31,7 +31,7 @@ export const getPage=async(username,itemperpage) => {
   }
 };
 
-export const userStatusUpdate = async (id, setUser, status, user) => {
+export const userStatusUpdate = async (id, setUser, status, user,dispatch,logoutAdmin) => {
   try {
     const response = await adminInstance.patch(`/customer/${id}`, { status });
     if (response) {

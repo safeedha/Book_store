@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState} from 'react';
 import Navbar from '@/Reusable/Navbar';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import instance from '@/instance';
 import { useSelector } from 'react-redux';
 import Footer from '@/Reusable/Footer';
 import { Lens } from '@/components/ui/lens';
-import { motion } from 'framer-motion';
+
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
@@ -28,7 +28,7 @@ function Singleproduct() {
   const [language, setLanguage] = useState('');
   const [price, setPrice] = useState(0);
   const [offer, setOffer] = useState(null);
-  const [category, setCategory] = useState('');
+
   const [stock, setStock] = useState(0);
   const [sku, setSku] = useState('');
   const [opt, setOpt] = useState(''); // For category options
@@ -39,7 +39,7 @@ function Singleproduct() {
   const [_id, set_Id] = useState(null);
   const { id } = useParams();
   const [filled, setFilled] = useState(false);
-
+  console.log(sku)
   useEffect(() => {
     const getSingleProduct = async () => {
       try {
@@ -96,7 +96,7 @@ function Singleproduct() {
       }
     };
     getWisListStaaus();
-  }, [id, _id]);
+  }, [id, _id,dispatch]);
 
   const changeImage = (img) => {
     setActiveImage(img);

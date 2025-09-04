@@ -1,5 +1,5 @@
-import React, { useState, createContext } from 'react';
-
+import  { useState, createContext } from 'react';
+import PropTypes from "prop-types";
 export const shopcontext = createContext();
 
 function ShopcontexProvider(props) {
@@ -13,3 +13,6 @@ function ShopcontexProvider(props) {
 }
 
 export default ShopcontexProvider;
+ShopcontexProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};

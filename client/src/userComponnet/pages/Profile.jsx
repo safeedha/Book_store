@@ -1,24 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import ProfileComponent from '@/Reusable/ProfileComponent';
 import { useSelector } from 'react-redux';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
-import instance from '@/instance';
+
 import { setUserDetails } from '../../feature/userSlice';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+
 import Navbar from '@/Reusable/Navbar';
 import { profileUpdate } from '../../User_apiservices/profile';
 
 function Profile() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+ 
   const [phonenumber, setPhoneNumber] = useState('');
   const [isEditing, setIsEditing] = useState(true);
-  const [editData, setEditData] = useState({});
+ 
   const user = useSelector((state) => state.user.userInfo);
 
   useEffect(() => {

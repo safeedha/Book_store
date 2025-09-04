@@ -1,9 +1,12 @@
 import  { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import instance from '../instance';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
-
+import PropTypes from "prop-types";
+VerifyOTP.propTypes = {
+  email: PropTypes.string.isRequired,
+  onSendData: PropTypes.func.isRequired,
+};
 function VerifyOTP({ email, onSendData }) {
   const [otp, setOtp] = useState('');
   const [timer, setTimer] = useState(180); // 3 minutes countdown
@@ -95,7 +98,7 @@ function VerifyOTP({ email, onSendData }) {
 
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-500">
-            Didn't receive the OTP?{' '}
+            Didn&apos;t receive the OTP?{' '}
             <button
               type="button"
               className={`font-medium ${isResendDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-indigo-600 hover:underline'}`}

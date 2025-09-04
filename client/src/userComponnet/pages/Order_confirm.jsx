@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import Navbar from '@/Reusable/Navbar';
-import About from '@/Reusable/About';
+
 import Footer from '@/Reusable/Footer';
 import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -14,7 +14,7 @@ function Order_confirm() {
       navigate('/checkout');
       return null;
     }
-  }, []);
+  }, [location.state?.fromCheckout,navigate]);
 
   return (
     <>

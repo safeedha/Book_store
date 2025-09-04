@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import {
   returnedProduct,
@@ -12,13 +12,13 @@ import { toast } from 'sonner';
 function Return() {
   const [returned, setReturned] = useState([]);
   const [active, setActive] = useState(false);
-  const [status, setSatatus] = useState(true);
+
   useEffect(() => {
     const getAllreturnProduct = async () => {
       await returnedProduct(setReturned);
     };
     getAllreturnProduct();
-  }, [status]);
+  }, []);
 
   const approvedHandle = async (orderid, productid, useId) => {
     const result = await Swal.fire({
@@ -38,7 +38,7 @@ function Return() {
     }
   };
 
-  const rejectHandle = async (orderid, productid, useId, setSatatus) => {
+  const rejectHandle = async (orderid, productid, useId) => {
     const result = await Swal.fire({
       title: 'Are you sure about reject return this product?',
       text: `if you done know you cant never go back`,

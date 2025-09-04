@@ -13,7 +13,7 @@ export const getWalletinformation = async (setWallet) => {
 
 const moneyAdd = async (amount) => {
   try {
-    const response = await instance.post(`user/wallet/add`, { amount: amount });
+   await instance.post(`user/wallet/add`, { amount: amount });
   } catch (error) {
     console.log(error);
   }

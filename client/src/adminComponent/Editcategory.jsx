@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +7,9 @@ import { toast } from 'sonner';
 import { getOneCetegory, updateCategory } from './AdminApi/Category';
 import Sidebar from './Sidebar';
 
-const EditCategory = ({ onSubmit }) => {
+
+const EditCategory = () => {
+
   const [categoryName, setCategoryName] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');

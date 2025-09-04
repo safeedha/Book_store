@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
-import { useNavigate } from 'react-router-dom';
+
 import { toast } from 'sonner';
 import { getUser, userStatusUpdate,getPage } from './AdminApi/User';
 import Swal from 'sweetalert2';
@@ -10,9 +10,8 @@ import { logoutAdmin } from '../feature/adminSlice';
 
 function Getcustomer() {
   const dispatch = useDispatch();
-  const Navigate = useNavigate();
-  const [user, setUser] = useState([]);
 
+  const [user, setUser] = useState([]);
   const [itemsPerPage] = useState(5);
   const [username, setUsername] = useState('');
 
@@ -28,11 +27,9 @@ function Getcustomer() {
       }
     };
     fetchCustomer();
-  }, [page]);
+  }, [page,dispatch,itemsPerPage]);
 
-  const Edithandle = (id) => {
-    Navigate(`/admin/customer/${id}`, { state: { id } });
-  };
+
 
   const Editblock = async (id) => {
     const result = await Swal.fire({
@@ -59,7 +56,11 @@ function Getcustomer() {
           logoutAdmin
         );
       } catch (error) {
-        toast.error('Some error occurred. Try again later.');
+        if(error)
+        {
+         toast.error('Some error occurred. Try again later.');
+        }
+        
       }
     }
   };
@@ -68,7 +69,7 @@ function Getcustomer() {
 
 
   const Search = async() => {
-       const result=await getPage(username)  
+       await getPage(username)  
   };
   return (
     <div className="flex">
@@ -81,7 +82,7 @@ function Getcustomer() {
             <h2 className="text-2xl font-bold">Customers</h2>
 
             <div className="flex items-center gap-2">
-              <input
+              {/* <input
                 type="text"
                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter name..."
@@ -92,7 +93,7 @@ function Getcustomer() {
                 className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
               >
                 Search
-              </button>
+              </button> */}
             </div>
           </div>
 

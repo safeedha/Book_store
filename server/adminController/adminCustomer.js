@@ -18,16 +18,6 @@ const getCustomer = async (req, res, next) => {
   }
 };
 
-const getPage=async(req, res, next) => {
-  try {
-    const { username,itemperpage} = req.query;
-    const user = await User.findOne({ _id: id });
-    res.status(200).json({ message: 'single user data', user });
-    console.log(user);
-  } catch (error) {
-    next(error);
-  }
-};
 
 
 const getsingleUser = async (req, res, next) => {

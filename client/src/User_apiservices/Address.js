@@ -111,7 +111,7 @@ export const updateAddress = async (
   city
 ) => {
   try {
-    const response = await instance.post(`/user/address/${id}`, {
+     await instance.post(`/user/address/${id}`, {
       name,
       phone,
       streetAddress,

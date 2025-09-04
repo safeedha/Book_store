@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
 import adminInstance from './AdminApi/AdminInstance';
@@ -22,7 +22,7 @@ function Editproduct() {
   const [category, setCategory] = useState('');
   const [stock, setStock] = useState(0);
   const [sku, setSku] = useState('');
-  const [opt, setOpt] = useState('');
+
   const [image, setImage] = useState([]);
   const [cateList, setCateList] = useState([]);
   const [image1, setImage1] = useState(null);
@@ -81,13 +81,16 @@ function Editproduct() {
         setSku(response.data.product.sku);
         setImage(response.data.product.images);
       } catch (error) {
+        if(error)
+        {
         dispatch(logoutAdmin());
+        }
       }
     };
     if (id) {
       getSingleProduct();
     }
-  }, [id]);
+  }, [id,dispatch]);
 
   const handleSubmit = async (e) => {
     try {
@@ -383,52 +386,52 @@ function Editproduct() {
               />
             </div>
 
-            <div class="flex space-x-4">
-              <div class="flex-1 p-4 text-center">
+            <div className="flex space-x-4">
+              <div className="flex-1 p-4 text-center">
                 <img
                   src={croped ? croped : image[0]}
                   alt="Image 1"
-                  class="w-full h-auto rounded-lg"
+                  className="w-full h-auto rounded-lg"
                 />
                 <input
                   type="file"
-                  class="mt-2 p-2 border rounded-md w-full"
+                  className="mt-2 p-2 border rounded-md w-full"
                   onChange={handleFilechange}
                 />
               </div>
-              <div class="flex-1 p-4 text-center">
+              <div className="flex-1 p-4 text-center">
                 <img
                   src={croped2 ? croped2 : image[1]}
                   alt="Image 2"
-                  class="w-full h-auto rounded-lg"
+                  className="w-full h-auto rounded-lg"
                 />
                 <input
                   type="file"
-                  class="mt-2 p-2 border rounded-md w-full"
+                  className="mt-2 p-2 border rounded-md w-full"
                   onChange={handleFilechange2}
                 />
               </div>
-              <div class="flex-1 p-4 text-center">
+              <div className="flex-1 p-4 text-center">
                 <img
                   src={croped3 ? croped3 : image[2]}
                   alt="Image 3"
-                  class="w-full h-auto rounded-lg"
+                  className="w-full h-auto rounded-lg"
                 />
                 <input
                   type="file"
-                  class="mt-2 p-2 border rounded-md w-full"
+                  className="mt-2 p-2 border rounded-md w-full"
                   onChange={handleFilechange3}
                 />
               </div>
-              <div class="flex-1 p-4 text-center">
+              <div className="flex-1 p-4 text-center">
                 <img
                   src={croped4 ? croped4 : image[3]}
                   alt="Image 4"
-                  class="w-full h-auto rounded-lg"
+                  className="w-full h-auto rounded-lg"
                 />
                 <input
                   type="file"
-                  class="mt-2 p-2 border rounded-md w-full"
+                  className="mt-2 p-2 border rounded-md w-full"
                   onChange={handleFilechange4}
                 />
               </div>

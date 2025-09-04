@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { Toaster } from '@/components/ui/sonner';
-import { toast } from 'sonner';
 import { getOffer, deleteOffer } from './AdminApi/offerApi';
 import Swal from 'sweetalert2';
 import Pagination from '@/Reusable/Pagination';

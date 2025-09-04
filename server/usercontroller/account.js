@@ -20,12 +20,12 @@ const otpGeneration = async (email) => {
     const exist = await OtpModel.findOne({ email });
 
     if (exist) {
-      const update = await OtpModel.updateOne(
+         await OtpModel.updateOne(
         { email },
         { $set: { otp: otp, createdAt: Date.now() } }
       );
     } else {
-      const newOtp = await OtpModel.create({ email, otp });
+        await OtpModel.create({ email, otp });
     }
 
     const transporter = nodemailer.createTransport({
@@ -151,9 +151,6 @@ const googleLogin = async (req, res, next) => {
       email,
       verified_email,
       name,
-      given_name,
-      family_name,
-      picture,
     } = profile;
     const existing = await User.findOne({ googleId: id });
     if (existing) {

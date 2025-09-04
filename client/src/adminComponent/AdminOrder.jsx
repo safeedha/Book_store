@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import Sidebar from './Sidebar';
 import { getOrder, OrderStatus } from './AdminApi/Order';
 import Pagination from '@/Reusable/Pagination';
@@ -53,7 +53,7 @@ function AdminOrder() {
     navigate('/admin/return');
   };
 
-  const order_item = order.map((item, index) =>
+  const order_item = order.map((item) =>
     item.order_item.map((prod, index2) => {
       const currentStatus = prod.order_status;
       const paymentstatus = prod.payment_status;

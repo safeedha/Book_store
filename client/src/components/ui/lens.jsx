@@ -1,6 +1,7 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import  { useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import PropTypes from "prop-types";
 
 export const Lens = ({
   children,
@@ -107,4 +108,16 @@ export const Lens = ({
       )}
     </div>
   );
+};
+Lens.propTypes = {
+  children: PropTypes.node,
+  zoomFactor: PropTypes.number,
+  lensSize: PropTypes.number,
+  isStatic: PropTypes.bool,
+  position: PropTypes.shape({
+    x: PropTypes.number,
+    y: PropTypes.number,
+  }),
+  hovering: PropTypes.bool,
+  setHovering: PropTypes.func,
 };

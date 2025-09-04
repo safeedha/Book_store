@@ -70,6 +70,7 @@ function GetCategory() {
       try {
         await getAllCategory(setCategory,page,rowsPerPage,setTotalpage);
       } catch (error) {
+        console.log(error)
         toast.error('Error fetching category data');
       }
     };
@@ -96,7 +97,10 @@ function GetCategory() {
         await categoryBlock(id, setCategory, Swal, status, category);
       }
     } catch (error) {
-      toast.error('Some error occurred. Try later.');
+      if(error)
+      {
+         toast.error('Some error occurred. Try later.');
+      }
     }
   };
 
@@ -129,7 +133,7 @@ function GetCategory() {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Category Management</h2>
             <div className="flex items-center gap-2">
-              <input
+              {/* <input
                 type="text"
                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter name..."
@@ -140,7 +144,7 @@ function GetCategory() {
                 className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
               >
                 Search
-              </button>
+              </button> */}
             </div>
             <button
               onClick={addCategory}

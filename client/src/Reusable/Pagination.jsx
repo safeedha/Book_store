@@ -1,4 +1,4 @@
-
+import PropTypes from "prop-types";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevious = () => {
@@ -49,5 +49,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     </div>
   );
 };
-
+Pagination.propTypes = {
+  currentPage: PropTypes.number.isRequired,
+  totalPages: PropTypes.number.isRequired,
+  onPageChange: PropTypes.func.isRequired,
+};
 export default Pagination;

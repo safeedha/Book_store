@@ -175,7 +175,7 @@ const subQuantityCart = async (req, res, next) => {
     const { cartId } = req.params;
     const { id } = req.user;
     const { productid } = req.body;
-    const product = await Product.findOne({ _id: productid }).populate(
+     await Product.findOne({ _id: productid }).populate(
       'offerId'
     );
     const user = await User.findById(id);

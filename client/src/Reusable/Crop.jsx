@@ -1,12 +1,14 @@
 import { useState, useCallback } from 'react';
 import Cropper from 'react-easy-crop';
 import { useDispatch } from 'react-redux';
+import PropTypes from "prop-types";
 import {
   imageUrlupdate,
   imageUrl2update,
   imageUrl3update,
   imageUrl4update,
 } from '../feature/imageSlice';
+
 
 const Crop = ({ url = null, url2 = null, url3 = null, url4 = null }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -85,5 +87,10 @@ const Crop = ({ url = null, url2 = null, url3 = null, url4 = null }) => {
     </div>
   );
 };
-
+Crop.propTypes = {
+  url: PropTypes.string,
+  url2: PropTypes.string,
+  url3: PropTypes.string,
+  url4: PropTypes.string,
+};
 export default Crop;

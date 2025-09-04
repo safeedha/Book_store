@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import {  useState } from 'react';
 import instance from '@/instance';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
@@ -20,9 +20,7 @@ const PasswordReset = () => {
     setPassword(false);
   };
 
-  useEffect(() => {
-    console.log(dataFromOTP);
-  }, []);
+
   const Emailhandling = async (e) => {
     e.preventDefault();
     try {
@@ -53,7 +51,11 @@ const PasswordReset = () => {
     try {
       await passwordReset(email, newPassword, navigate, toast);
     } catch (error) {
-      toast.error('Failed to reset password');
+      if(error)
+      {
+        toast.error('Failed to reset password');
+      }
+      
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import ProfileComponent from '@/Reusable/ProfileComponent';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ import {
   subCartQuantity,
 } from '@/User_apiservices/cart';
 import Swal from 'sweetalert2';
-import { current } from '@reduxjs/toolkit';
+
 
 function Cart() {
   const [cartproduct, setCartproduct] = useState([]);
@@ -22,7 +22,7 @@ function Cart() {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userInfo);
-  const [del, setDel] = useState(false);
+
 
   useEffect(() => {
     const fetchCartProduct = async () => {
@@ -34,7 +34,7 @@ function Cart() {
     };
 
     fetchCartProduct();
-  }, []);
+  }, [Navigate,dispatch]);
 
   useEffect(() => {
     const result = cartproduct.reduce((accumulator, current) => {
@@ -108,7 +108,7 @@ function Cart() {
     }
   };
 
-  const cartItem = cartproduct.map((item, index) => (
+  const cartItem = cartproduct.map((item) => (
     <div
       key={item._id}
       className="border-solid border-2 border-orange-900 pl-3 flex mb-3 py-2 w-[400px] shadow-lg"

@@ -56,11 +56,14 @@ function GetProduct() {
       try {
         await getAllproduct(page,rowsPerPage,setTotalPages,setProduct, dispatch, logoutAdmin);
       } catch (error) {
-        toast.error('There is an error in fetching products.');
+        if(error)
+        {
+         toast.error('There is an error in fetching products.');
+        }
       }
     };
     fetchProduct();
-  }, [page]);
+  }, [page,dispatch,prodname]);
   function Addoffer(id) {
     setIsOpen(true);
     setProductID(id);
@@ -86,7 +89,7 @@ function GetProduct() {
       });
 
       if (result.isConfirmed) {
-        const response = changeStatus(status, dispatch, logoutAdmin);
+        const response = changeStatus(id,status, dispatch, logoutAdmin);
         if (response) {
           const updatedProduct = product.map((doc) =>
             doc._id === id ? { ...doc, status } : doc
@@ -101,6 +104,7 @@ function GetProduct() {
         }
       }
     } catch (error) {
+      console.log(error)
       Swal.fire('Error!', 'Some error occurred. Try again later.', 'error');
     }
   };
@@ -180,21 +184,21 @@ function GetProduct() {
       </td>
     </tr>
   ));
-  const Search = () => {
-    const filtered = product.filter((doc) =>
-      doc.name.toLowerCase().includes(prodname.toLowerCase())
-    );
+  // const Search = () => {
+  //   const filtered = product.filter((doc) =>
+  //     doc.name.toLowerCase().includes(prodname.toLowerCase())
+  //   );
 
-    const sorted = [
-      ...filtered,
-      ...product.filter(
-        (doc) => !doc.name.toLowerCase().includes(prodname.toLowerCase())
-      ),
-    ];
+  //   const sorted = [
+  //     ...filtered,
+  //     ...product.filter(
+  //       (doc) => !doc.name.toLowerCase().includes(prodname.toLowerCase())
+  //     ),
+  //   ];
 
-    setProduct(sorted);
-    setCurrentPage(1);
-  };
+  //   setProduct(sorted);
+  //   setCurrentPage(1);
+  // };
   return (
     <div className="flex">
       <Toaster position="top-center" richColors />
@@ -207,7 +211,7 @@ function GetProduct() {
             <h2 className="text-2xl font-bold">Product Management</h2>
 
             <div className="flex items-center gap-2">
-              <input
+              {/* <input
                 type="text"
                 className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter name..."
@@ -218,7 +222,7 @@ function GetProduct() {
                 className="bg-blue-600 text-white py-2 px-6 rounded shadow hover:bg-blue-700 transition-all duration-200"
               >
                 Search
-              </button>
+              </button> */}
             </div>
 
             <button

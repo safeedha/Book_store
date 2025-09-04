@@ -1,5 +1,4 @@
 const User = require('../Model/User');
-const OtpModel = require('../Model/Otp');
 const account = require('./account');
 const bcrypt = require('bcrypt');
 
@@ -26,7 +25,7 @@ const Passwordreset = async (req, res, next) => {
     const { email, newPassword } = req.body;
 
     const passwordHash = await bcrypt.hash(newPassword, 10);
-    const update = await User.updateOne(
+     await User.updateOne(
       {
         email: email,
         googleId: null,

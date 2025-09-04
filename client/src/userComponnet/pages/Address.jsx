@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import ProfileComponent from '@/Reusable/ProfileComponent';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Toaster } from '@/components/ui/sonner';
-import instance from '@/instance';
+
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Navbar from '@/Reusable/Navbar';
@@ -131,7 +131,7 @@ function Address() {
     }
   };
 
-  const item = address.map((add, index) => (
+  const item = address.map((add) => (
     <div className="bg-white w-48 p-4 rounded-lg shadow-2xl" key={add._id}>
       <div className="space-y-2">
         <p className="text-lg font-semibold">{add.name}</p>

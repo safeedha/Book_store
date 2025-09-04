@@ -1,7 +1,7 @@
 const Offer = require('../Model/Offer');
 const Product = require('../Model/Product');
 const Category = require('../Model/Category');
-const { updateOne } = require('../Model/Coupen');
+
 const createcategoryOffer = async (req, res, next) => {
   try {
     const { catid, name, expiryDate, discount } = req.body;
@@ -123,10 +123,10 @@ const deleteOffer = async (req, res, next) => {
   try {
     const { offerid } = req.params;
     console.log(offerid);
-    const offer = await Offer.findById(offerid);
+   await Offer.findById(offerid);
     await Category.updateOne({ offerId: offerid }, { $set: { offerId: null } });
     await Product.updateMany({ offerId: offerid }, { $set: { offerId: null } });
-    const del = await Offer.deleteOne({ _id: offerid });
+     await Offer.deleteOne({ _id: offerid });
 
     const offers = await Offer.find().populate({
       path: 'offerType_id',

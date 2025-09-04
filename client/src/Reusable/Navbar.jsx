@@ -9,6 +9,8 @@ import { cartQuantityUpdate } from '../feature/cartSlice';
 import { useContext } from 'react';
 import { shopcontext } from '../context/Shopcontex';
 import { useNavigate } from 'react-router-dom';
+import PropTypes from "prop-types";
+
 
 
 const Navbar = ({ user }) => {
@@ -163,3 +165,7 @@ const Navbar = ({ user }) => {
 };
 
 export default Navbar;
+
+Navbar.propTypes = {
+  user: PropTypes.string
+};

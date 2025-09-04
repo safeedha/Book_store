@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
 
@@ -75,7 +75,7 @@ function Checkout() {
         setPayment(true);
       }
     }
-  }, [wallet]);
+  }, [wallet,totalprice]);
 
   const addressManagement = () => {
     setAddr(true);
@@ -150,7 +150,7 @@ function Checkout() {
       }
     };
     fetchCartProduct();
-  }, []);
+  }, [dispatch,Navigate]);
 
   useEffect(() => {
     const fetchCoupen = async () => {
@@ -241,7 +241,7 @@ function Checkout() {
     }
     if (coupenCode) {
       const result = coupen.filter(
-        (item, index) => coupenCode === item.coupenCode
+        (item) => coupenCode === item.coupenCode
       );
       console.log(result[0].minimumPurchase);
       if (result.length === 0) {
@@ -286,7 +286,7 @@ function Checkout() {
     };
 
     processPayment();
-  }, [orderId]);
+  }, [orderId,Navigate,Razorpay,paymentMethod,totalprice]);
 
   const RemoveHandle = async (id) => {
     try {

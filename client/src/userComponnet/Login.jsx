@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { googleLogout, useGoogleLogin } from '@react-oauth/google';
+import { useState, useEffect } from 'react';
+import {  useGoogleLogin } from '@react-oauth/google';
 import instance from '../instance';
 import axios from 'axios';
 import { Toaster } from '@/components/ui/sonner';
@@ -25,7 +25,7 @@ function Login() {
         setError('Both fields are required');
         return;
       }
-      const response = await userLogin(
+        await userLogin(
         email,
         password,
         dispatch,
@@ -77,7 +77,7 @@ function Login() {
     };
 
     fetchUserInfo();
-  }, [user]);
+  }, [user,dispatch,navigate]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
@@ -142,7 +142,7 @@ function Login() {
         </button>
 
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
+          Don&apos;t have an account?
           <Link
             to="/signup"
             className="font-medium text-indigo-600 hover:text-indigo-500"

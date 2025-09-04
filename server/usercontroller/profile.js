@@ -11,7 +11,7 @@ const updateProfile = async (req, res, next) => {
       if (phoneexist) {
         return res.status(400).json({ message: 'this number already in use' });
       } else {
-        let update = await User.updateOne(
+          await User.updateOne(
           { _id: id },
           {
             $set: {
@@ -23,7 +23,7 @@ const updateProfile = async (req, res, next) => {
     }
 
     if (req.body?.editedname) {
-      let update = await User.updateOne(
+         await User.updateOne(
         { _id: id },
         {
           $set: {
@@ -45,7 +45,7 @@ const chanePassword = async (req, res, next) => {
     console.log(id);
     const { newPassword } = req.body;
     const passwordHash = await bcrypt.hash(newPassword, 10);
-    const user = await User.updateOne(
+       await User.updateOne(
       { _id: id },
       {
         $set: {

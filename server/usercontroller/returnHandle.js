@@ -6,10 +6,10 @@ const returnProduct = async (req, res, next) => {
     const { returnreason } = req.body;
     const { id } = req.user;
     const order = await Order.findById(orderid);
-    orderItem = order.order_item;
+    const orderItem = order.order_item;
 
     const single = orderItem.find(
-      (item, index) => item.product_id.toString() === productId
+      (item) => item.product_id.toString() === productId
     );
     single.return_request.is_requested = true;
     single.return_request.return_reason = returnreason;
@@ -27,7 +27,7 @@ const returnProduct = async (req, res, next) => {
       .status(200)
       .json({ message: 'You requested for return', order: orders });
   } catch (error) {
-    console.log(error);
+     next(error);
   }
 };
 

@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
+import adminInstance from './AdminApi/AdminInstance';
 
 function Editcustomer() {
-  const location = useLocation();
+
   const Navigate = useNavigate();
   const { id } = useParams();
-  const [error, setError] = useState(true);
+
   console.log(id);
   const [formData, setFormData] = useState({
     name: '',
@@ -63,7 +64,9 @@ function Editcustomer() {
       if (response.status == 200) {
         Navigate(-1);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (

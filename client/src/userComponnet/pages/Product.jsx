@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Navbar from '@/Reusable/Navbar';
 import { useSelector } from 'react-redux';
 import instance from '../../instance';

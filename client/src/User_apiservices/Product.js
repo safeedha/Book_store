@@ -9,12 +9,10 @@ export const fetchNewProduct = async () => {
 };
 
 export const fetchCategory = async () => {
-  try {
+
     const response = await instance.get('user/category');
     return response;
-  } catch (error) {
-    throw error;
-  }
+ 
 };
 
 export const productInformation = async (

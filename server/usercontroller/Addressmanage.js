@@ -1,5 +1,5 @@
 const Address = require('../Model/Address');
-const { verifyUsertoken } = require('../Middleware/usertokenverify');
+
 
 const addAddress = async (req, res) => {
   try {
@@ -82,7 +82,7 @@ const deleteAddress = async (req, res, next) => {
   try {
     const { add_id } = req.params;
     const { id } = req.user;
-    const update = await Address.updateOne(
+       await Address.updateOne(
       { _id: add_id },
       {
         $set: {

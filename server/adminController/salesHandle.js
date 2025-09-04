@@ -2,7 +2,7 @@ const Order = require('../Model/Order');
 
 const todayreportHandle = async (req, res, next) => {
   try {
-    const today = new Date(); // Current date and time
+ 
     const startOfDay = new Date(); // Independent new Date object for start of the day
     startOfDay.setHours(0, 0, 0, 0); // Set start of the day (00:00:00)
 
@@ -67,7 +67,7 @@ const todayreportHandle = async (req, res, next) => {
   }
 };
 
-const weekreportHandle = async (req, res, next) => {
+const weekreportHandle = async (req, res) => {
   try {
     const today = new Date();
     const dayOfWeek = today.getDay();
@@ -249,8 +249,7 @@ const customReportHandle = async (req, res, next) => {
     console.log(orders);
     res.status(200).json({ message: true, orders });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error fetching report' });
+     next(error)
   }
 };
 

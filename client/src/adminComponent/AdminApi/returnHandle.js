@@ -3,8 +3,7 @@ import adminInstance from './AdminInstance';
 export const returnedProduct = async (setReturned) => {
   try {
     const response = await adminInstance.get('/return');
-    setReturned(response.data.return);
-    console.log(response.data.return);
+    setReturned(response.data.return)
   } catch (error) {
     console.log(error);
   }
@@ -15,7 +14,6 @@ export const approveProduct = async (
   productid,
   userid,
   toast,
-  setActive
 ) => {
   try {
     console.log(orderid, productid, userid);
@@ -31,7 +29,7 @@ export const approveProduct = async (
       toast.success(
         "Product return processed successfully. The refund has been credited to the customer's wallet."
       );
-      setStatus((prevStatus) => !prevStatus);
+      // setStatus((prevStatus) => !prevStatus);
     }
   } catch (error) {
     console.error(error);
@@ -43,7 +41,7 @@ export const rejectProduct = async (
   productid,
   userid,
   toast,
-  setActive
+  // setActive
 ) => {
   try {
     const response = await adminInstance.patch('/return/reject', null, {
@@ -56,7 +54,7 @@ export const rejectProduct = async (
 
     if (response) {
       toast.success('product return request rejected');
-      setStatus((prevStatus) => !prevStatus);
+      // setStatus((prevStatus) => !prevStatus);
     }
   } catch (error) {
     console.error(error);

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import ProfileComponent from '@/Reusable/ProfileComponent';
 import Navbar from '@/Reusable/Navbar';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { getWalletinformation } from '../../User_apiservices/wallet';
 import { useRazorpay } from 'react-razorpay';
 import { addMoneyWallet } from '../../User_apiservices/wallet';
-import { set } from 'lodash';
+
 function Wallet() {
   const user = useSelector((state) => state.user.userInfo);
   const [wallet, setWallet] = useState([]);

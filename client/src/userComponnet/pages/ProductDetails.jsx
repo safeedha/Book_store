@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import ProfileComponent from '@/Reusable/ProfileComponent';
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom';

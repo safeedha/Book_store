@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
-import { Toaster } from '@/components/ui/sonner';
-import instance from '@/instance';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import { getoneAddress, updateAddress } from '../../User_apiservices/Address';
 import ProfileComponent from '@/Reusable/ProfileComponent';

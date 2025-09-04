@@ -59,9 +59,7 @@ const adminLogin = async (req, res) => {
   }
 };
 
-const dashboard = (req, res) => {
-  return res.json({ message: 'Good, you have access to the dashboard' });
-};
+
 
 module.exports = {
   adminLogin,

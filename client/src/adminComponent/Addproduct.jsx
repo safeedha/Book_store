@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Crop from '@/Reusable/Crop';
 import { useSelector } from 'react-redux';
@@ -44,7 +44,7 @@ const AddProduct = () => {
     };
 
     fetchCategory();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (croped == '') {
@@ -59,12 +59,13 @@ const AddProduct = () => {
     let item = [...crop];
     item.push(croped);
     setCrop([...item]);
-  }, [croped]);
+  }, [croped,crop]);
 
   const handleFileChange = (e) => {
     setProductImage(e.target.files[0]);
     const url = URL.createObjectURL(e.target.files[0]);
     setImages(url);
+    console.log(productImage)
   };
 
   const handleSubmit = async (e) => {
@@ -170,7 +171,7 @@ const AddProduct = () => {
           Add a New Product
         </h2>
         <Toaster position="top-center" richColors />
-        <form className="space-y-6" onSubmit={handleSubmit} p-4>
+        <form className="space-y-6 p-4" onSubmit={handleSubmit} >
           <div className="space-y-2">
             <label className="block text-lg font-medium text-gray-800">
               Product Name

@@ -1,4 +1,4 @@
-import { set } from 'lodash';
+
 import adminInstance from './AdminInstance';
 
 export const todayreport = async (
@@ -22,8 +22,8 @@ export const todayreport = async (
       return acc + item.actual_amount; // Add item.total_amount to the accumulator
     }, 0);
     let discount = actualamount - netamount;
-    const todaysProduct = response.data.orders.map((item, index) => {
-      return item.order_item.map((single, index) => {
+    const todaysProduct = response.data.orders.map((item) => {
+      return item.order_item.map((single) => {
         return single.name;
       });
     });
@@ -77,8 +77,8 @@ export const weekReport = async (
   try {
     const response = await adminInstance.get('/sales/week');
     console.log(response.data.orders);
-    const orderItem_time = response.data.orders.map((item, index) => {
-      return item.order_item.map((single, index) => {
+    const orderItem_time = response.data.orders.map((item) => {
+      return item.order_item.map((single) => {
         const deliveredDate = new Date(single.delivered_date); // Ensure this is a Date object
         const dayNames = [
           'Sunday',
@@ -96,8 +96,8 @@ export const weekReport = async (
     const labelspreprocess = orderItem_time.flat();
     console.log(labelspreprocess);
 
-    const orderItem_price = response.data.orders.map((item, index) => {
-      return item.order_item.map((single, index) => {
+    const orderItem_price = response.data.orders.map((item) => {
+      return item.order_item.map((single) => {
         const singleprice = Math.ceil(
           single.original_price -
             (single.original_price * single.discount) / 100
@@ -130,7 +130,7 @@ export const weekReport = async (
       }
       return acc;
     }, {});
-    const res = Object.keys(result);
+ 
     const label = [];
     const labels = [
       'Sunday',
@@ -195,8 +195,8 @@ export const monthReport = async (
   try {
     const response = await adminInstance.get('/sales/month');
     setDeliverd(response.data.orders);
-    const orderItem_month = response.data.orders.map((item, index) => {
-      return item.order_item.map((single, index) => {
+    const orderItem_month = response.data.orders.map((item) => {
+      return item.order_item.map((single) => {
         const deliveredDate = new Date(single.delivered_date); // Ensure this is a Date object
         const monthIndex = deliveredDate.getMonth(); // Get the month index (0-11)
         return monthIndex;
@@ -219,8 +219,8 @@ export const monthReport = async (
     }, {});
     console.log(count);
 
-    const orderItem_price = response.data.orders.map((item, index) => {
-      return item.order_item.map((single, index) => {
+    const orderItem_price = response.data.orders.map((item) => {
+      return item.order_item.map((single) => {
         const singleprice = Math.ceil(
           single.original_price -
             (single.original_price * single.discount) / 100

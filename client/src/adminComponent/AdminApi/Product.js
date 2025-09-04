@@ -15,7 +15,7 @@ export const getAllproduct = async (page,rowsPerPage,setTotalPages,setProduct, d
   }
 };
 
-export const changeStatus = async (status, dispatch, logoutAdmin) => {
+export const changeStatus = async (id,status, dispatch, logoutAdmin) => {
   try {
     const response = await adminInstance.patch(`/product/${id}`, { status });
     return response;

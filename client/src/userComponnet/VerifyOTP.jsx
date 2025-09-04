@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import instance from '../instance';
 import { Toaster, toast } from 'sonner';
@@ -53,6 +53,7 @@ function VerifyOTP() {
         setIsResendDisabled(true);
       }
     } catch (error) {
+      console.log(error)
       toast.error('Failed to resend OTP. Please try again later');
     }
   };
@@ -96,7 +97,7 @@ function VerifyOTP() {
 
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-500">
-            Didn't receive the OTP?{' '}
+            Didn&apos;t receive the OTP?{" "}
             <button
               type="button"
               className={`font-medium ${isResendDisabled ? 'text-gray-400 cursor-not-allowed' : 'text-indigo-600 hover:underline'}`}

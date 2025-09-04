@@ -62,7 +62,7 @@ const getApprove = async (req, res, next) => {
     let wallet = await Wallet.findOne({ user_id: userId });
     let category = await Category.findById(product.categoryId);
     const required = order.order_item.find(
-      (item, index) => item.product_id.toString() === productId
+      (item,) => item.product_id.toString() === productId
     );
     product.sellingcount = product.sellingcount - required.quantity;
     category.sellingcount = category.sellingcount - required.quantity;
@@ -228,11 +228,11 @@ const getApprove = async (req, res, next) => {
 
 const getReject = async (req, res, next) => {
   try {
-    const { orderId, productId, userId } = req.query;
+    const { orderId, productId } = req.query;
     const order = await Order.findById(orderId);
     const orderItem = order.order_item;
     const required = orderItem.find(
-      (item, index) => item.product_id.toString() === productId
+      (item, ) => item.product_id.toString() === productId
     );
     required.return_request.is_requested = false;
     required.return_request.is_approved = false;

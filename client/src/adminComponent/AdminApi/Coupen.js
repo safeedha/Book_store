@@ -55,5 +55,7 @@ export const coupenDelet = async (id, setCoupen) => {
   try {
     const response = await adminInstance.patch(`/coupen/${id}`);
     setCoupen(response.data.coupen);
-  } catch (error) {}
+  } catch (error) {
+   console.log(error)
+  }
 };

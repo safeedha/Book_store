@@ -9,7 +9,7 @@ const getOrder = async (req, res, next) => {
     currentPage = parseInt(currentPage);
     rowsPerPage = parseInt(rowsPerPage);
 
-
+    
     const totalOrders = await Order.countDocuments();
 
 
@@ -80,6 +80,7 @@ const OrderStatus = async (req, res, next) => {
     const walletarray = wallet.wallet_item;
 
     if (newStatus === 'Cancelled') {
+       let amount=0
       if (
         order.payment_methods === 'online payment' ||
         (order.payment_methods === 'wallet payment' && order.coupen_id)

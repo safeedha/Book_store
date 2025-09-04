@@ -1,7 +1,6 @@
 const Order = require('../Model/Order');
 const Cart = require('../Model/Cart');
 const Product = require('../Model/Product');
-const { OrderStatus } = require('../adminController/adminOrder');
 const User = require('../Model/User');
 const Coupen = require('../Model/Coupen');
 const Wallet = require('../Model/Wallet');
@@ -143,12 +142,14 @@ const getOrder = async (req, res, next) => {
   }
 };
 
+
+
 const cancelOrder = async (req, res, next) => {
   try {
     const { orderid } = req.params;
     const { id } = req.user;
     const { productId } = req.body;
-
+   let amount=0
     const order = await Order.findOne({ _id: orderid }).populate(`coupen_id`);
     const orderItem = order.order_item.find(
       (item) => item.product_id.toString() === productId
@@ -156,7 +157,7 @@ const cancelOrder = async (req, res, next) => {
 
     const quantityToReturn = orderItem ? orderItem.quantity : 0;
 
-    const result = await Order.updateOne(
+    await Order.updateOne(
       { _id: orderid, 'order_item.product_id': productId },
       {
         $set: {
@@ -184,14 +185,14 @@ const cancelOrder = async (req, res, next) => {
         (item) =>
           item.payment_status === 'pending' || item.payment_status === 'failed'
       );
-      amount =
+        amount =
         Math.ceil(
           orderItem.original_price -
             (orderItem.original_price * orderItem.discount) / 100
         ) * orderItem.quantity;
       let newprice = order.total_amount - amount;
       if (hasPendingOrFailed) {
-        const result = await Order.updateOne(
+          await Order.updateOne(
           { _id: orderid, 'order_item.product_id': productId },
           {
             $set: {
@@ -253,7 +254,7 @@ const cancelOrder = async (req, res, next) => {
             ) * orderItem.quantity;
           await order.save();
         } else {
-          let amount =
+           amount =
             Math.ceil(
               orderItem.original_price -
                 (orderItem.original_price * orderItem.discount) / 100

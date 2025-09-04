@@ -1,5 +1,5 @@
 import instance from './instance';
-import Swal from 'sweetalert2';
+
 
 export const createOrder = async (
   price,
@@ -122,7 +122,7 @@ export const returnRequest = async (
 
 export const changePaymentStatus = async (status, orderId) => {
   try {
-    const response = await instance.patch('user/payment/', { status, orderId });
+    await instance.patch('user/payment/', { status, orderId });
   } catch (error) {
     console.log('Error changing payment status:', error);
   }

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Swal from 'sweetalert2';
 import { startOfDay, endOfDay } from 'date-fns';
 import { todayreport } from './AdminApi/Sales';
 import { Toaster } from '@/components/ui/sonner';
-import { toast } from 'sonner';
+
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 
@@ -13,7 +13,7 @@ export default function Salesreport() {
   const [dateRange, setDateRange] = useState('Today');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [csvData, setCsvData] = useState([]);
+
 
   useEffect(() => {
     const fetchTodayReport = async () => {
@@ -22,7 +22,7 @@ export default function Salesreport() {
           const date = new Date();
           const start = startOfDay(date);
           const end = endOfDay(date);
-          const data = await todayreport(start, end, setReportData);
+         await todayreport(start, end, setReportData);
         }
       } catch (error) {
         console.error("Error fetching today's report:", error);
@@ -61,7 +61,7 @@ export default function Salesreport() {
       }
       const start = startOfDay(new Date(startDate));
       const end = endOfDay(new Date(endDate));
-      const data = await todayreport(start, end, setReportData);
+      await todayreport(start, end, setReportData);
     } catch (error) {
       console.log(error);
     }
@@ -123,7 +123,7 @@ export default function Salesreport() {
       item._id,
       item.user_details[0].name,
       item.product_details
-        .map((prod, idx) => {
+        .map((prod) => {
           const orderItem = item.order_items.find(
             (order) => order.product_id === prod._id
           );

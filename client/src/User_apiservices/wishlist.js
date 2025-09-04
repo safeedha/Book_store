@@ -26,7 +26,7 @@ export const wishListremove = async (setFilled, toast, id) => {
       setFilled(false);
       toast.info('Product removed from Wishlist');
     }
-  } catch {
+  } catch(error) {
     if (error.response.status === 403) {
       toast.error('User is blocked,You can add more product to wishList');
     }

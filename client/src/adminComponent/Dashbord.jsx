@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import SalesGraph from './SalesGraph';
 import {
@@ -9,8 +9,6 @@ import {
 } from './AdminApi/salesHandle';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
-import * as XLSX from 'xlsx';
-import { CSVDownload, CSVLink } from 'react-csv';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import { useDispatch } from 'react-redux';
@@ -55,7 +53,7 @@ export default function Dashbord() {
       );
     };
     getDefaultreprt();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const orderAmount = order.reduce(
@@ -79,7 +77,7 @@ export default function Dashbord() {
       0
     );
     setAlldiscount(discount);
-  }, [order]);
+  }, [order,dispatch]);
 
   const exportToPDF = () => {
     const transformedData = csvData[0].map((_, index) =>
