@@ -35,6 +35,50 @@ const createCoupen = async (req, res, next) => {
   }
 };
 
+const editCoupen = async (req, res, next) => {
+  try {
+    const { id } = req.params; // coupon id from URL
+    const {
+      copencode,
+      copentype,
+      minimumPurchase,
+      discount,
+      limit,
+      selectedDate,
+      status
+    } = req.body;
+
+   
+    const coupen = await Coupen.findById(id);
+    if (!coupen) {
+      return res.status(404).json({ message: "Coupon not found" });
+    }
+
+ 
+    if (copencode && copencode !== coupen.coupenCode) {
+      const existing = await Coupen.findOne({ coupenCode: copencode, status: "active" });
+      if (existing) {
+        return res.status(409).json({ message: "This code already exists" });
+      }
+    }
+
+   
+    coupen.coupenCode = copencode || coupen.coupenCode;
+    coupen.coupenType = copentype || coupen.coupenType;
+    coupen.minimumPurchase = minimumPurchase ?? coupen.minimumPurchase;
+    coupen.discountedAmount = discount ?? coupen.discountedAmount;
+    coupen.usageLimit = limit ?? coupen.usageLimit;
+    coupen.expiryDate = selectedDate || coupen.expiryDate;
+    coupen.status = status || coupen.status;
+
+    await coupen.save();
+
+    return res.status(200).json({ message: "Coupon updated successfully", coupon: coupen });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getAllCopen = async (req, res, next) => {
   try {
     let { page = 1, rowsPerPage = 10 } = req.query;
@@ -76,4 +120,5 @@ module.exports = {
   createCoupen,
   getAllCopen,
   deletCoupen,
+  editCoupen
 };

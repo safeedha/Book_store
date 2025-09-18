@@ -14,7 +14,7 @@ const Crop = ({ url = null, url2 = null, url3 = null, url4 = null }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
-  // const [croppedImageUrl, setCroppedImageUrl] = useState(null);
+
   const dispatch = useDispatch();
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {

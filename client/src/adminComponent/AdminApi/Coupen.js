@@ -41,6 +41,18 @@ export const coupencreation = async (
   }
 };
 
+export const coupenUpdate = async (id, data, toast, closeModal, setCoupadd) => {
+  try {
+    const res = await adminInstance.put(`/coupen/${id}`, data);
+    console.log(res)
+    toast.success("Coupon updated successfully");
+    closeModal();
+    setCoupadd((prev) => !prev); 
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Failed to update coupon");
+  }
+};
+
 export const getAllcopen = async (page,rowsPerPage,setTotalpage,setCoupen) => {
   try {
     const response = await adminInstance.get('/coupen',{params:{page,rowsPerPage}});

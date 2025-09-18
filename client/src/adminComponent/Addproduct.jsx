@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Crop from '@/Reusable/Crop';
+import CropImage from '@/Reusable/CropImage';
 import { useSelector } from 'react-redux';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
@@ -30,8 +31,8 @@ const AddProduct = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       try {
-        const response = await adminInstance.get('/category');
-        setCateList(response.data.category);
+        const response = await adminInstance.get('/category/all');
+        setCateList(response.data.categories);
       } catch (error) {
         toast.error('Error fetching category data:');
         if (
@@ -46,26 +47,27 @@ const AddProduct = () => {
     fetchCategory();
   }, [dispatch]);
 
-  useEffect(() => {
-    if (croped == '') {
-      return;
-    }
-    if (crop.length === 4) {
-      alert('only 4 image can be uplaodable');
-      setImages('');
-      return;
-    }
-    console.log('the croped', croped);
-    let item = [...crop];
-    item.push(croped);
-    setCrop([...item]);
-  }, [croped,crop]);
+   useEffect(() => {
+  if (croped === '') return;
 
+  if (crop.length === 4) {
+    toast.error('only 4 images can be uploaded');
+    setImages('');
+    return;
+  }
+
+  let item = [...crop];
+  item.push(croped);
+  setCrop([...item]);
+
+
+ 
+}, [croped]);
   const handleFileChange = (e) => {
     setProductImage(e.target.files[0]);
     const url = URL.createObjectURL(e.target.files[0]);
     setImages(url);
-    console.log(productImage)
+  
   };
 
   const handleSubmit = async (e) => {
@@ -73,16 +75,7 @@ const AddProduct = () => {
       e.preventDefault();
       let uploaded = [];
 
-      console.log(
-        productName,
-        description,
-        author,
-        language,
-        price,
-        category,
-        stock,
-        sku
-      );
+     
       if (productName.trim().length === 0) {
         toast.error('Product Name cannot be empty');
         return;
@@ -148,6 +141,7 @@ const AddProduct = () => {
         }, 3000);
       }
     } catch (error) {
+      console.log(error)
       if (error.response.status === 409) {
         toast.error('This product already exist');
       }
@@ -303,7 +297,7 @@ const AddProduct = () => {
             </div>
           </div>
           <div className="flex justify-center space-y-5">
-            {images && <Crop url={images} />}
+             {images && <Crop url={images} />}
 
             {crop.length > 0 && (
               <div className="mt-4">

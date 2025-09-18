@@ -43,6 +43,22 @@ const addCategory = async (req, res, next) => {
 };
 
 
+const getallCategory = async (req, res, next) => {
+  try {
+    
+    const categories = await Category.find({})
+  
+
+    res.status(200).json({
+      message: 'Categories fetched successfully',
+      categories,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 const statusUpdate = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -116,4 +132,5 @@ module.exports = {
   statusUpdate,
   getsingleCategory,
   updateCategory,
+  getallCategory 
 };

@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import { Toaster } from '@/components/ui/sonner';
 import { toast } from 'sonner';
 import Modal from 'react-modal';
-import { coupencreation, getAllcopen, coupenDelet } from './AdminApi/Coupen';
+import { coupencreation, getAllcopen, coupenDelet,coupenUpdate } from './AdminApi/Coupen';
 import Swal from 'sweetalert2';
 import Pagination from '@/Reusable/Pagination';
 const customStyles = {
@@ -21,6 +21,7 @@ function GetCoupe() {
   let subtitle;
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
+ const [modal2IsOpen, setIsOpen2] = React.useState(false);
   const [copencode, setCopencode] = useState('');
   const [copentype, setCopentype] = useState('');
   const [minimumPurchase, setMinimumPurchase] = useState(null);
@@ -31,6 +32,15 @@ function GetCoupe() {
   const [coupadd, setCoupadd] = useState(false);
   const[totalpage,setTotalpage]=useState(1)
   const [page,setPage]=useState(1)
+  const [edit,setEdit]=useState(false)
+  const [singlecoupen, setSinglecoupen] = useState({
+  coupenCode: "",
+  coupenType: "",
+  minimumPurchase: "",
+  discount: "",
+  usageLimit: "",
+  expiryDate: "",
+});
 
   const rowsPerPage = 4;
   useEffect(() => {
@@ -43,6 +53,7 @@ function GetCoupe() {
 
   function openModal() {
     setIsOpen(true);
+    
   }
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4;
@@ -55,8 +66,12 @@ function GetCoupe() {
 
   function closeModal() {
     setIsOpen(false);
+    setIsOpen2(false)
   }
-
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSinglecoupen((prev) => ({ ...prev, [name]: value }));
+  };
   const handleDelete = async (id) => {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -86,7 +101,7 @@ function GetCoupe() {
         return;
       }
       if (copentype === 'flat') {
-        if (Number(discount) > Number(minimumPurchase)) {
+        if (Number(discount) >= Number(minimumPurchase)) {
           toast.error(
             `Discount (${discount}) exceeds the minimum purchase amount (${minimumPurchase})`
           );
@@ -94,9 +109,9 @@ function GetCoupe() {
         }
       }
       if (copentype === 'percentage') {
-        if (Number(discount) > 100) {
+        if (Number(discount) >= 100) {
           toast.error(
-            'Your discount should be in percentage,please fill value between 1 to 100'
+            'Your discount should be in percentage,please fill value between 1 to 99'
           );
           return;
         }
@@ -116,6 +131,64 @@ function GetCoupe() {
       console.log(error);
     }
   };
+
+    const copeneditSubmit = async (e) => {
+  try {
+    e.preventDefault();
+
+    const { coupenCode, coupenType, minimumPurchase, discount, usageLimit, expiryDate, _id } =
+      singlecoupen;
+
+    const selectedDate = new Date(expiryDate);
+
+    // ✅ Validations
+    if (coupenCode.length <= 2) {
+      toast.error("Coupon code should have more than 2 letters");
+      return;
+    }
+    if (selectedDate < new Date()) {
+      toast.error("Expiry date should be a future value");
+      return;
+    }
+    if (coupenType === "flat" && Number(discount) >= Number(minimumPurchase)) {
+      toast.error(
+        `Discount (${discount}) exceeds the minimum purchase amount (${minimumPurchase})`
+      );
+      return;
+    }
+    if (coupenType === "percentage" && Number(discount) >= 100) {
+      toast.error(
+        "Your discount should be in percentage, please fill a value between 1 to 99"
+      );
+      return;
+    }
+
+    // ✅ Call API for update
+    await coupenUpdate(
+      _id, // 👈 pass coupon id to update
+      {
+        coupenCode,
+        coupenType,
+        minimumPurchase,
+        discount,
+        usageLimit,
+        expiryDate: selectedDate,
+      },
+      toast,
+      closeModal, 
+      setCoupadd 
+    );
+  } catch (error) {
+    console.log(error);
+    toast.error("Something went wrong while updating the coupon");
+  }
+};
+
+   const handleEdit=(doc)=>{
+   setEdit(true)
+   setSinglecoupen(doc)
+   setIsOpen2(true)
+   }
   const coupenItem = currentItems.map((doc, index) => (
     <tr key={index}>
       <td className="border border-gray-500 px-4 py-2">{doc.coupenCode}</td>
@@ -142,15 +215,26 @@ function GetCoupe() {
         {new Date(doc.expiryDate) > new Date() ? 'Active' : 'Inactive'}
       </td>
       <td className="border border-gray-500 px-4 py-2">
+         <button
+        className="w-28 px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition"
+        onClick={() => handleDelete(doc._id)}
+      >
+        Delete
+      </button>
+
+      <br />
+
+      {new Date(doc.expiryDate) > new Date() && (
         <button
-          className="px-4 py-2 bg-red-500 text-white font-semibold rounded hover:bg-red-600 transition"
-          onClick={() => handleDelete(doc._id)}
+          className="w-28 px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600 transition"
+          onClick={() => handleEdit(doc)}
         >
-          Delete
+          Edit
         </button>
-      </td>
-    </tr>
-  ));
+      )}
+            </td>
+          </tr>
+        ));
   return (
     <div className="flex h-screen overflow-hidden">
       <Toaster position="top-center" richColors />
@@ -183,6 +267,7 @@ function GetCoupe() {
                 Add New Coupon
               </h2>
               <br />
+              <br/>
               <button
                 onClick={closeModal}
                 className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
@@ -318,6 +403,148 @@ function GetCoupe() {
               </form>
             </div>
           </Modal>
+
+
+
+
+            <Modal
+      isOpen={modal2IsOpen}
+      onAfterOpen={afterOpenModal}
+      onRequestClose={closeModal}
+      style={customStyles}
+      contentLabel="Add Coupon Modal"
+    >
+      <div className="p-6 w-[400px]">
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-4">
+          {edit ? "Edit Coupon" : "Add Coupon"}
+        </h2>
+
+        <button
+          onClick={closeModal}
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800"
+        >
+          ✕
+        </button>
+
+        <form className="space-y-4" onSubmit={copeneditSubmit}>
+          {/* Coupon Code */}
+          <div>
+            <label htmlFor="coupenCode" className="block text-gray-700 font-medium">
+              Coupon Code
+            </label>
+            <input
+              type="text"
+              id="coupenCode"
+              name="coupenCode"
+              required
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+              placeholder="Enter coupon code"
+              value={singlecoupen.coupenCode}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="coupenType" className="block text-gray-700 font-medium">
+              Coupon Type
+            </label>
+            <select
+              id="coupenType"
+              name="coupenType"
+              required
+              className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+              value={singlecoupen.coupenType}
+              onChange={handleInputChange}
+            >
+              <option value="" disabled>Select coupon type</option>
+              <option value="flat">Flat</option>
+              <option value="percentage">Percentage</option>
+            </select>
+          </div>
+
+      
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="minimumPurchase" className="block text-gray-700 font-medium">
+                Minimum Purchase
+              </label>
+              <input
+                type="number"
+                id="minimumPurchase"
+                name="minimumPurchase"
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                placeholder="Enter minimum purchase"
+                value={singlecoupen.minimumPurchase}
+                onChange={handleInputChange}
+                min="100"
+              />
+            </div>
+            <div>
+              <label htmlFor="discount" className="block text-gray-700 font-medium">
+                Discounted Amount
+              </label>
+              <input
+                type="number"
+                id="discount"
+                name="discount"
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                placeholder="Enter discounted amount"
+                value={singlecoupen.discount}
+                onChange={handleInputChange}
+                min="1"
+              />
+            </div>
+          </div>
+
+          {/* Usage Limit & Expiry Date */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="usageLimit" className="block text-gray-700 font-medium">
+                Usage Limit
+              </label>
+              <input
+                type="number"
+                id="usageLimit"
+                name="usageLimit"
+                required
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                placeholder="Enter usage limit"
+                value={singlecoupen.usageLimit}
+                onChange={handleInputChange}
+                min="1"
+              />
+            </div>
+            <div>
+              <label htmlFor="expiryDate" className="block text-gray-700 font-medium">
+                Expiry Date
+              </label>
+              <input
+                type="date"
+                id="expiryDate"
+                name="expiryDate"
+                required
+                value={singlecoupen.expiryDate?.slice(0, 10)} // ✅ ensures date shows correctly
+                className="w-full mt-1 px-4 py-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                onChange={handleInputChange}
+              />
+            </div>
+          </div>
+
+         
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 focus:ring focus:ring-blue-300 transition-all"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </Modal>
+
 
           <table className="w-full border-collapse">
             <thead>

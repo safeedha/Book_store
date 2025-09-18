@@ -149,6 +149,7 @@ const cancelOrder = async (req, res, next) => {
     const { orderid } = req.params;
     const { id } = req.user;
     const { productId } = req.body;
+    console.log("kn")
    let amount=0
     const order = await Order.findOne({ _id: orderid }).populate(`coupen_id`);
     const orderItem = order.order_item.find(
@@ -181,6 +182,7 @@ const cancelOrder = async (req, res, next) => {
     const walletarray = wallet.wallet_item;
 
     if (order.payment_methods === 'online payment' && !order.coupen_id) {
+     
       const hasPendingOrFailed = order.order_item.some(
         (item) =>
           item.payment_status === 'pending' || item.payment_status === 'failed'
@@ -211,6 +213,7 @@ const cancelOrder = async (req, res, next) => {
           .populate('shipping_address')
           .sort({ createdAt: -1 });
         res.status(200).json({ success: true, original: Allorder });
+        return
       }
     }
 
@@ -323,6 +326,7 @@ const cancelOrder = async (req, res, next) => {
           .populate('shipping_address')
           .sort({ createdAt: -1 });
         res.status(200).json({ success: true, original: Allorder });
+        return
       }
     }
 
@@ -532,6 +536,7 @@ const cancelOrder = async (req, res, next) => {
       .populate('shipping_address')
       .sort({ createdAt: -1 });
     res.status(200).json({ success: true, original: Allorder });
+    return
   } catch (error) {
     next(error);
   }

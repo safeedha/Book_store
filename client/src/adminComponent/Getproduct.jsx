@@ -306,7 +306,7 @@ function GetProduct() {
                       placeholder="Enter offer in percentage"
                       onChange={(e) => setDiscount(e.target.value)}
                       min="1"
-                      max="100"
+                      max="99"
                     />
                   </div>
                 </div>

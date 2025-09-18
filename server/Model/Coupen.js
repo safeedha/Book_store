@@ -24,14 +24,16 @@ const coupenSchema = new Schema(
       type: Number,
       required: true,
     },
-    expiryDate: {
-      type: Date,
-      required: true,
-    },
+    
     status: {
       type: String,
       default: 'active',
     },
+    expiryDate: {
+    type: Date,
+    required: true,
+    index: { expires: 0 } 
+  },
     userId: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

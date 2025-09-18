@@ -23,6 +23,7 @@ admin_routes.patch('/customer/:id', verifyUser, customer.statusUpdate);
 
 admin_routes.post('/category', verifyUser, category.addCategory);
 admin_routes.get('/category', verifyUser, category.getCategory);
+admin_routes.get('/category/all', verifyUser, category.getallCategory);
 admin_routes.patch('/category/:id', verifyUser, category.statusUpdate);
 admin_routes.get('/category/:id', verifyUser, category.getsingleCategory);
 admin_routes.post('/category/:id', verifyUser, category.updateCategory);
@@ -45,6 +46,7 @@ admin_routes.patch('/order/:orderId/:prodId', verifyUser, order.OrderStatus);
 admin_routes.post('/coupen', verifyUser, coupen.createCoupen);
 admin_routes.get('/coupen', verifyUser, coupen.getAllCopen);
 admin_routes.patch('/coupen/:id', verifyUser, coupen.deletCoupen);
+admin_routes.put("/coupen/:id",verifyUser, coupen.editCoupen);
 
 admin_routes.post('/offer/category', verifyUser, offer.createcategoryOffer);
 admin_routes.post('/offer/product', verifyUser, offer.createproductOffer);
